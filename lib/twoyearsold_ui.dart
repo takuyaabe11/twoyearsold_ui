@@ -10,6 +10,7 @@ export 'src/brand_footer.dart';
 export 'src/menu_row.dart';
 export 'src/section_label.dart';
 export 'src/theme_name.dart';
+export 'src/l10n.dart';
 export 'src/providers.dart';
 export 'src/settings_controller.dart';
 export 'src/settings_screen.dart';

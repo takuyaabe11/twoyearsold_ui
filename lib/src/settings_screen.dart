@@ -3,10 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'settings_controller.dart';
 import 'app_theme.dart';
+import 'l10n.dart';
 import 'theme_name.dart';
 import 'section_label.dart';
 
-/// 設定: テーマ・効果音・演出。エディトリアル。
+/// 設定: テーマ・言語・効果音・演出。エディトリアル。全文言は共有 i18n から。
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
@@ -14,6 +15,7 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider);
     final ctrl = ref.read(settingsProvider.notifier);
+    final l10n = ref.watch(l10nProvider);
     final theme = settings.theme;
 
     return Scaffold(
@@ -36,7 +38,7 @@ class SettingsScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 24),
                     Text(
-                      'Settings',
+                      l10n.settings,
                       style: TextStyle(
                         fontFamily: theme.displayFontFamily,
                         fontFamilyFallback: theme.fontFamilyFallback,
@@ -49,7 +51,7 @@ class SettingsScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 40),
 
-                    SectionLabel('Theme', theme),
+                    SectionLabel(l10n.theme, theme),
                     Container(
                       decoration: BoxDecoration(
                         border: Border(top: BorderSide(color: theme.thinLine)),
@@ -68,7 +70,32 @@ class SettingsScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 36),
 
-                    SectionLabel('Game', theme),
+                    SectionLabel(l10n.language, theme),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border(top: BorderSide(color: theme.thinLine)),
+                      ),
+                      child: Column(
+                        children: [
+                          _ChoiceRow(
+                            theme: theme,
+                            label: l10n.languageSystem,
+                            selected: settings.localeCode == null,
+                            onTap: () => ctrl.setLocale(null),
+                          ),
+                          for (final lang in L10n.supported)
+                            _ChoiceRow(
+                              theme: theme,
+                              label: lang.name,
+                              selected: settings.localeCode == lang.code,
+                              onTap: () => ctrl.setLocale(lang.code),
+                            ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 36),
+
+                    SectionLabel(l10n.game, theme),
                     Container(
                       decoration: BoxDecoration(
                         border: Border(top: BorderSide(color: theme.thinLine)),
@@ -77,13 +104,13 @@ class SettingsScreen extends ConsumerWidget {
                         children: [
                           _ToggleRow(
                             theme: theme,
-                            label: 'Sound',
+                            label: l10n.sound,
                             value: settings.soundEnabled,
                             onChanged: ctrl.setSound,
                           ),
                           _ToggleRow(
                             theme: theme,
-                            label: 'Animations',
+                            label: l10n.animations,
                             value: settings.animationsEnabled,
                             onChanged: ctrl.setAnimations,
                           ),
@@ -145,6 +172,49 @@ class _ThemeRow extends StatelessWidget {
             Expanded(
               child: Text(
                 themeName(id),
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
+                  color: selected ? theme.textPrimary : theme.textSecondary,
+                  letterSpacing: 0.1,
+                ),
+              ),
+            ),
+            if (selected) Icon(Icons.check, size: 18, color: theme.accent),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// テキストのみの選択行(言語など)。
+class _ChoiceRow extends StatelessWidget {
+  final AppTheme theme;
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+  const _ChoiceRow({
+    required this.theme,
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: theme.thinLine)),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 18),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                label,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
