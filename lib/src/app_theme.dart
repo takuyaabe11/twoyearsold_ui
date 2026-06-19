@@ -14,7 +14,8 @@ class AppTheme {
   /// ロゴ / 大見出しのディスプレイ書体。
   final String displayFontFamily;
 
-  /// [fontFamily] が無い環境での代替(Helvetica Neue → Arimo → 日本語 NotoSansJP)。
+  /// [fontFamily] が無い環境での代替。Latin は Arimo、CJK 等は地域別フォントへ。
+  /// 既定は日本語優先。表示言語に応じた並べ替えは [withFontFallback] で行う。
   final List<String> fontFamilyFallback;
 
   /// 地(上→下のごく僅かなグラデに使う2色)。
@@ -49,7 +50,11 @@ class AppTheme {
     required this.brightness,
     this.fontFamily = 'Helvetica Neue',
     this.displayFontFamily = 'Helvetica Neue',
-    this.fontFamilyFallback = const ['Helvetica', 'Arimo', 'Arial', 'NotoSansJP'],
+    this.fontFamilyFallback = const [
+      'Helvetica', 'Arimo', 'Arial',
+      'NotoSansJP', 'NotoSansSC', 'NotoSansTC', 'NotoSansKR',
+      'NotoSansArabic', 'NotoSansDevanagari', 'NotoSansThai',
+    ],
     required this.background,
     required this.backgroundAlt,
     required this.surface,
@@ -64,6 +69,56 @@ class AppTheme {
     required this.errorFill,
     required this.selectionFill,
   });
+
+  /// 表示言語コード(例 'ja' / 'zh_Hant')に応じたフォントフォールバック列。
+  ///
+  /// 同じ漢字コードポイントでも字形は言語ごとに異なる(Han unification)。表示中の
+  /// 言語の地域フォントを CJK 群の先頭に据え、他言語字形への化けを防ぐ。Latin/数字は
+  /// Arimo を先に置く(地域フォントの Latin 字形を使わせない)。— DESIGN.md §2.1。
+  static List<String> fallbackForLocale(String? code) {
+    const byLocale = {
+      'ja': 'NotoSansJP',
+      'zh': 'NotoSansSC',
+      'zh_Hant': 'NotoSansTC',
+      'ko': 'NotoSansKR',
+      'ar': 'NotoSansArabic',
+      'hi': 'NotoSansDevanagari',
+      'th': 'NotoSansThai',
+    };
+    const all = [
+      'NotoSansJP', 'NotoSansSC', 'NotoSansTC', 'NotoSansKR',
+      'NotoSansArabic', 'NotoSansDevanagari', 'NotoSansThai',
+    ];
+    final active = byLocale[code];
+    return [
+      'Helvetica', 'Arimo', 'Arial',
+      ?active,
+      for (final f in all)
+        if (f != active) f,
+    ];
+  }
+
+  /// フォールバック列だけ差し替えた複製(色・書体は不変)。
+  AppTheme withFontFallback(List<String> fallback) => AppTheme(
+        id: id,
+        brightness: brightness,
+        fontFamily: fontFamily,
+        displayFontFamily: displayFontFamily,
+        fontFamilyFallback: fallback,
+        background: background,
+        backgroundAlt: backgroundAlt,
+        surface: surface,
+        onSurface: onSurface,
+        thinLine: thinLine,
+        boxLine: boxLine,
+        textPrimary: textPrimary,
+        textSecondary: textSecondary,
+        textMuted: textMuted,
+        accent: accent,
+        errorText: errorText,
+        errorFill: errorFill,
+        selectionFill: selectionFill,
+      );
 
   /// エディトリアル・ダーク(全アプリの第一既定。黒地 × オフホワイト × 朱)。
   static const editorialDark = AppTheme(
