@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'settings_controller.dart';
 import 'app_theme.dart';
 import 'l10n.dart';
+import 'language_pulldown.dart';
 import 'theme_name.dart';
 import 'section_label.dart';
 
@@ -71,27 +72,22 @@ class SettingsScreen extends ConsumerWidget {
                     const SizedBox(height: 36),
 
                     SectionLabel(l10n.language, theme),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border(top: BorderSide(color: theme.thinLine)),
-                      ),
-                      child: Column(
-                        children: [
-                          _ChoiceRow(
-                            theme: theme,
-                            label: l10n.languageSystem,
-                            selected: settings.localeCode == null,
-                            onTap: () => ctrl.setLocale(null),
-                          ),
-                          for (final lang in L10n.supported)
-                            _ChoiceRow(
-                              theme: theme,
-                              label: lang.name,
-                              selected: settings.localeCode == lang.code,
-                              onTap: () => ctrl.setLocale(lang.code),
-                            ),
-                        ],
-                      ),
+                    LanguagePulldown(
+                      selectedCode: settings.localeCode,
+                      languages: L10n.supported,
+                      systemLabel: l10n.languageSystem,
+                      deviceLanguageName: L10n.supported
+                          .firstWhere(
+                            (l) => l.code == L10n.resolve(null).code,
+                            orElse: () => L10n.supported.first,
+                          )
+                          .name,
+                      onChanged: ctrl.setLocale,
+                      textPrimary: theme.textPrimary,
+                      textSecondary: theme.textSecondary,
+                      surface: theme.surface,
+                      line: theme.thinLine,
+                      accent: theme.accent,
                     ),
                     const SizedBox(height: 36),
 
@@ -172,49 +168,6 @@ class _ThemeRow extends StatelessWidget {
             Expanded(
               child: Text(
                 themeName(id),
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
-                  color: selected ? theme.textPrimary : theme.textSecondary,
-                  letterSpacing: 0.1,
-                ),
-              ),
-            ),
-            if (selected) Icon(Icons.check, size: 18, color: theme.accent),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// テキストのみの選択行(言語など)。
-class _ChoiceRow extends StatelessWidget {
-  final AppTheme theme;
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-  const _ChoiceRow({
-    required this.theme,
-    required this.label,
-    required this.selected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: theme.thinLine)),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 18),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                label,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
