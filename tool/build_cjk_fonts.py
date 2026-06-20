@@ -62,6 +62,7 @@ GAMES = {
     'Reversi':     {'dart': ['lib/l10n/rv_l10n.dart'], 'shared': True},
     '2048':        {'dart': ['lib/l10n/tf_l10n.dart'], 'shared': True},
     'Gobblet':     {'dart': ['lib/l10n/gb_l10n.dart'], 'shared': True},
+    'AirHockey':   {'dart': ['lib/l10n/ah_l10n.dart'], 'shared': True},
     'Minesweeper': {'dart': ['lib/l10n/ms_l10n.dart'], 'shared': True},
     'NumberPlace': {'arb': 'lib/l10n', 'shared': False},
 }
