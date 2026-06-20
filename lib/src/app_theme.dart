@@ -82,12 +82,20 @@ class AppTheme {
       'zh_Hant': 'NotoSansTC',
       'ko': 'NotoSansKR',
       'ar': 'NotoSansArabic',
+      'fa': 'NotoSansArabic', // ペルシャ語もアラビア文字
+      'ur': 'NotoNastaliqUrdu',
       'hi': 'NotoSansDevanagari',
       'th': 'NotoSansThai',
+      'bn': 'NotoSansBengali',
+      'he': 'NotoSansHebrew',
+      'ta': 'NotoSansTamil',
+      'te': 'NotoSansTelugu',
     };
     const all = [
       'NotoSansJP', 'NotoSansSC', 'NotoSansTC', 'NotoSansKR',
       'NotoSansArabic', 'NotoSansDevanagari', 'NotoSansThai',
+      'NotoNastaliqUrdu', 'NotoSansBengali', 'NotoSansHebrew',
+      'NotoSansTamil', 'NotoSansTelugu',
     ];
     final active = byLocale[code];
     return [
