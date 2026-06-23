@@ -108,6 +108,8 @@ class L10n {
   String get victory => _get('victory');
   String get defeat => _get('defeat');
   String get draw => _get('draw');
+  String get achievements => _get('achievements');
+  String get dailyChallenge => _get('dailyChallenge');
 
   static const Map<String, Map<String, String>> _data = {
     'en': {
@@ -119,6 +121,7 @@ class L10n {
       'opponent': 'Opponent', 'computer': 'Computer', 'passAndPlay': 'Pass & Play',
       'firstMove': 'First move', 'yourTurn': 'Your turn', 'victory': 'Victory',
       'defeat': 'Defeat', 'draw': 'Draw',
+      'achievements': 'Achievements', 'dailyChallenge': 'Daily Challenge',
     },
     'ja': {
       'settings': '設定', 'game': 'ゲーム', 'theme': 'テーマ', 'sound': '効果音',
@@ -129,6 +132,7 @@ class L10n {
       'opponent': '対戦相手', 'computer': 'コンピュータ', 'passAndPlay': '交互プレイ',
       'firstMove': '先手', 'yourTurn': 'あなたの番', 'victory': '勝ち',
       'defeat': '負け', 'draw': '引き分け',
+      'achievements': '実績', 'dailyChallenge': 'デイリーチャレンジ',
     },
     'zh': {
       'settings': '设置', 'game': '游戏', 'theme': '主题', 'sound': '音效',
@@ -139,6 +143,7 @@ class L10n {
       'opponent': '对手', 'computer': '电脑', 'passAndPlay': '双人对战',
       'firstMove': '先手', 'yourTurn': '轮到你', 'victory': '胜利',
       'defeat': '失败', 'draw': '平局',
+      'achievements': '成就', 'dailyChallenge': '每日挑战',
     },
     'zh_Hant': {
       'settings': '設定', 'game': '遊戲', 'theme': '主題', 'sound': '音效',
@@ -149,6 +154,7 @@ class L10n {
       'opponent': '對手', 'computer': '電腦', 'passAndPlay': '雙人對戰',
       'firstMove': '先手', 'yourTurn': '輪到你', 'victory': '勝利',
       'defeat': '失敗', 'draw': '平手',
+      'achievements': '成就', 'dailyChallenge': '每日挑戰',
     },
     'ko': {
       'settings': '설정', 'game': '게임', 'theme': '테마', 'sound': '소리',
@@ -159,6 +165,7 @@ class L10n {
       'opponent': '상대', 'computer': '컴퓨터', 'passAndPlay': '둘이서',
       'firstMove': '선공', 'yourTurn': '당신 차례', 'victory': '승리',
       'defeat': '패배', 'draw': '무승부',
+      'achievements': '업적', 'dailyChallenge': '일일 챌린지',
     },
     'de': {
       'settings': 'Einstellungen', 'game': 'Spiel', 'theme': 'Thema', 'sound': 'Ton',
@@ -169,6 +176,7 @@ class L10n {
       'opponent': 'Gegner', 'computer': 'Computer', 'passAndPlay': 'Zu zweit',
       'firstMove': 'Erster Zug', 'yourTurn': 'Du bist dran', 'victory': 'Sieg',
       'defeat': 'Niederlage', 'draw': 'Unentschieden',
+      'achievements': 'Erfolge', 'dailyChallenge': 'Tagesrätsel',
     },
     'fr': {
       'settings': 'Paramètres', 'game': 'Jeu', 'theme': 'Thème', 'sound': 'Son',
@@ -179,6 +187,7 @@ class L10n {
       'opponent': 'Adversaire', 'computer': 'Ordinateur', 'passAndPlay': 'À deux',
       'firstMove': 'Premier coup', 'yourTurn': 'À vous', 'victory': 'Victoire',
       'defeat': 'Défaite', 'draw': 'Match nul',
+      'achievements': 'Succès', 'dailyChallenge': 'Défi du jour',
     },
     'es': {
       'settings': 'Ajustes', 'game': 'Juego', 'theme': 'Tema', 'sound': 'Sonido',
@@ -189,6 +198,7 @@ class L10n {
       'opponent': 'Rival', 'computer': 'Ordenador', 'passAndPlay': 'Dos jugadores',
       'firstMove': 'Primer movimiento', 'yourTurn': 'Tu turno', 'victory': 'Victoria',
       'defeat': 'Derrota', 'draw': 'Empate',
+      'achievements': 'Logros', 'dailyChallenge': 'Reto diario',
     },
     'it': {
       'settings': 'Impostazioni', 'game': 'Gioco', 'theme': 'Tema', 'sound': 'Suono',
@@ -199,6 +209,7 @@ class L10n {
       'opponent': 'Avversario', 'computer': 'Computer', 'passAndPlay': 'In due',
       'firstMove': 'Prima mossa', 'yourTurn': 'Tocca a te', 'victory': 'Vittoria',
       'defeat': 'Sconfitta', 'draw': 'Pareggio',
+      'achievements': 'Obiettivi', 'dailyChallenge': 'Sfida giornaliera',
     },
     'pt': {
       'settings': 'Definições', 'game': 'Jogo', 'theme': 'Tema', 'sound': 'Som',
@@ -209,6 +220,7 @@ class L10n {
       'opponent': 'Adversário', 'computer': 'Computador', 'passAndPlay': 'A dois',
       'firstMove': 'Primeira jogada', 'yourTurn': 'Sua vez', 'victory': 'Vitória',
       'defeat': 'Derrota', 'draw': 'Empate',
+      'achievements': 'Conquistas', 'dailyChallenge': 'Desafio Diário',
     },
     'pt_BR': {
       'settings': 'Configurações', 'game': 'Jogo', 'theme': 'Tema', 'sound': 'Som',
@@ -219,6 +231,7 @@ class L10n {
       'opponent': 'Adversário', 'computer': 'Computador', 'passAndPlay': 'Dois jogadores',
       'firstMove': 'Primeira jogada', 'yourTurn': 'Sua vez', 'victory': 'Vitória',
       'defeat': 'Derrota', 'draw': 'Empate',
+      'achievements': 'Conquistas', 'dailyChallenge': 'Desafio diário',
     },
     'ru': {
       'settings': 'Настройки', 'game': 'Игра', 'theme': 'Тема', 'sound': 'Звук',
@@ -229,6 +242,7 @@ class L10n {
       'opponent': 'Соперник', 'computer': 'Компьютер', 'passAndPlay': 'На двоих',
       'firstMove': 'Первый ход', 'yourTurn': 'Ваш ход', 'victory': 'Победа',
       'defeat': 'Поражение', 'draw': 'Ничья',
+      'achievements': 'Достижения', 'dailyChallenge': 'Задача дня',
     },
     'ar': {
       'settings': 'الإعدادات', 'game': 'اللعبة', 'theme': 'المظهر', 'sound': 'الصوت',
@@ -239,6 +253,7 @@ class L10n {
       'opponent': 'الخصم', 'computer': 'الكمبيوتر', 'passAndPlay': 'لاعبان',
       'firstMove': 'النقلة الأولى', 'yourTurn': 'دورك', 'victory': 'فوز',
       'defeat': 'خسارة', 'draw': 'تعادل',
+      'achievements': 'الإنجازات', 'dailyChallenge': 'التحدي اليومي',
     },
     'hi': {
       'settings': 'सेटिंग्स', 'game': 'खेल', 'theme': 'थीम', 'sound': 'ध्वनि',
@@ -249,6 +264,7 @@ class L10n {
       'opponent': 'प्रतिद्वंद्वी', 'computer': 'कंप्यूटर', 'passAndPlay': 'दो खिलाड़ी',
       'firstMove': 'पहली चाल', 'yourTurn': 'आपकी बारी', 'victory': 'जीत',
       'defeat': 'हार', 'draw': 'बराबरी',
+      'achievements': 'उपलब्धियाँ', 'dailyChallenge': 'दैनिक चुनौती',
     },
     'id': {
       'settings': 'Pengaturan', 'game': 'Permainan', 'theme': 'Tema', 'sound': 'Suara',
@@ -259,6 +275,7 @@ class L10n {
       'opponent': 'Lawan', 'computer': 'Komputer', 'passAndPlay': 'Dua Pemain',
       'firstMove': 'Langkah pertama', 'yourTurn': 'Giliranmu', 'victory': 'Menang',
       'defeat': 'Kalah', 'draw': 'Seri',
+      'achievements': 'Pencapaian', 'dailyChallenge': 'Tantangan Harian',
     },
     'nl': {
       'settings': 'Instellingen', 'game': 'Spel', 'theme': 'Thema', 'sound': 'Geluid',
@@ -269,6 +286,7 @@ class L10n {
       'opponent': 'Tegenstander', 'computer': 'Computer', 'passAndPlay': "Met z'n tweeën",
       'firstMove': 'Eerste zet', 'yourTurn': 'Jouw beurt', 'victory': 'Overwinning',
       'defeat': 'Verlies', 'draw': 'Gelijkspel',
+      'achievements': 'Prestaties', 'dailyChallenge': 'Dagelijkse uitdaging',
     },
     'pl': {
       'settings': 'Ustawienia', 'game': 'Gra', 'theme': 'Motyw', 'sound': 'Dźwięk',
@@ -279,6 +297,7 @@ class L10n {
       'opponent': 'Przeciwnik', 'computer': 'Komputer', 'passAndPlay': 'Dwóch graczy',
       'firstMove': 'Pierwszy ruch', 'yourTurn': 'Twój ruch', 'victory': 'Zwycięstwo',
       'defeat': 'Porażka', 'draw': 'Remis',
+      'achievements': 'Osiągnięcia', 'dailyChallenge': 'Wyzwanie dnia',
     },
     'th': {
       'settings': 'การตั้งค่า', 'game': 'เกม', 'theme': 'ธีม', 'sound': 'เสียง',
@@ -289,6 +308,7 @@ class L10n {
       'opponent': 'คู่ต่อสู้', 'computer': 'คอมพิวเตอร์', 'passAndPlay': 'สองผู้เล่น',
       'firstMove': 'เดินก่อน', 'yourTurn': 'ตาของคุณ', 'victory': 'ชนะ',
       'defeat': 'แพ้', 'draw': 'เสมอ',
+      'achievements': 'ความสำเร็จ', 'dailyChallenge': 'ปริศนาประจำวัน',
     },
     'tr': {
       'settings': 'Ayarlar', 'game': 'Oyun', 'theme': 'Tema', 'sound': 'Ses',
@@ -299,6 +319,7 @@ class L10n {
       'opponent': 'Rakip', 'computer': 'Bilgisayar', 'passAndPlay': 'İki Kişilik',
       'firstMove': 'İlk hamle', 'yourTurn': 'Sıra sende', 'victory': 'Zafer',
       'defeat': 'Yenilgi', 'draw': 'Berabere',
+      'achievements': 'Başarımlar', 'dailyChallenge': 'Günlük Görev',
     },
     'vi': {
       'settings': 'Cài đặt', 'game': 'Trò chơi', 'theme': 'Giao diện', 'sound': 'Âm thanh',
@@ -309,6 +330,7 @@ class L10n {
       'opponent': 'Đối thủ', 'computer': 'Máy', 'passAndPlay': 'Hai người',
       'firstMove': 'Đi trước', 'yourTurn': 'Lượt của bạn', 'victory': 'Chiến thắng',
       'defeat': 'Thua', 'draw': 'Hòa',
+      'achievements': 'Thành tích', 'dailyChallenge': 'Thử thách hằng ngày',
     },
     'uk': {
       'settings': 'Налаштування', 'game': 'Гра', 'theme': 'Тема', 'sound': 'Звук',
@@ -319,6 +341,7 @@ class L10n {
       'opponent': 'Суперник', 'computer': "Комп'ютер", 'passAndPlay': 'На двох',
       'firstMove': 'Перший хід', 'yourTurn': 'Ваш хід', 'victory': 'Перемога',
       'defeat': 'Поразка', 'draw': 'Нічия',
+      'achievements': 'Досягнення', 'dailyChallenge': 'Щоденне завдання',
     },
     'fa': {
       'settings': 'تنظیمات', 'game': 'بازی', 'theme': 'پوسته', 'sound': 'صدا',
@@ -329,6 +352,7 @@ class L10n {
       'opponent': 'حریف', 'computer': 'رایانه', 'passAndPlay': 'دو نفره',
       'firstMove': 'حرکت اول', 'yourTurn': 'نوبت شما', 'victory': 'پیروزی',
       'defeat': 'شکست', 'draw': 'مساوی',
+      'achievements': 'دستاوردها', 'dailyChallenge': 'چالش روزانه',
     },
     'sv': {
       'settings': 'Inställningar', 'game': 'Spel', 'theme': 'Tema', 'sound': 'Ljud',
@@ -339,6 +363,7 @@ class L10n {
       'opponent': 'Motståndare', 'computer': 'Dator', 'passAndPlay': 'Två spelare',
       'firstMove': 'Första draget', 'yourTurn': 'Din tur', 'victory': 'Seger',
       'defeat': 'Förlust', 'draw': 'Oavgjort',
+      'achievements': 'Prestationer', 'dailyChallenge': 'Dagens utmaning',
     },
     'da': {
       'settings': 'Indstillinger', 'game': 'Spil', 'theme': 'Tema', 'sound': 'Lyd',
@@ -349,6 +374,7 @@ class L10n {
       'opponent': 'Modstander', 'computer': 'Computer', 'passAndPlay': 'To spillere',
       'firstMove': 'Første træk', 'yourTurn': 'Din tur', 'victory': 'Sejr',
       'defeat': 'Nederlag', 'draw': 'Uafgjort',
+      'achievements': 'Præstationer', 'dailyChallenge': 'Dagens udfordring',
     },
     'nb': {
       'settings': 'Innstillinger', 'game': 'Spill', 'theme': 'Tema', 'sound': 'Lyd',
@@ -359,6 +385,7 @@ class L10n {
       'opponent': 'Motstander', 'computer': 'Datamaskin', 'passAndPlay': 'To spillere',
       'firstMove': 'Første trekk', 'yourTurn': 'Din tur', 'victory': 'Seier',
       'defeat': 'Tap', 'draw': 'Uavgjort',
+      'achievements': 'Prestasjoner', 'dailyChallenge': 'Dagens utfordring',
     },
     'fi': {
       'settings': 'Asetukset', 'game': 'Peli', 'theme': 'Teema', 'sound': 'Ääni',
@@ -369,6 +396,7 @@ class L10n {
       'opponent': 'Vastustaja', 'computer': 'Tietokone', 'passAndPlay': 'Kaksinpeli',
       'firstMove': 'Ensimmäinen siirto', 'yourTurn': 'Sinun vuorosi', 'victory': 'Voitto',
       'defeat': 'Tappio', 'draw': 'Tasapeli',
+      'achievements': 'Saavutukset', 'dailyChallenge': 'Päivän haaste',
     },
     'cs': {
       'settings': 'Nastavení', 'game': 'Hra', 'theme': 'Motiv', 'sound': 'Zvuk',
@@ -379,6 +407,7 @@ class L10n {
       'opponent': 'Soupeř', 'computer': 'Počítač', 'passAndPlay': 'Dva hráči',
       'firstMove': 'První tah', 'yourTurn': 'Jste na tahu', 'victory': 'Výhra',
       'defeat': 'Prohra', 'draw': 'Remíza',
+      'achievements': 'Úspěchy', 'dailyChallenge': 'Denní výzva',
     },
     'el': {
       'settings': 'Ρυθμίσεις', 'game': 'Παιχνίδι', 'theme': 'Θέμα', 'sound': 'Ήχος',
@@ -389,6 +418,7 @@ class L10n {
       'opponent': 'Αντίπαλος', 'computer': 'Υπολογιστής', 'passAndPlay': 'Δύο παίκτες',
       'firstMove': 'Πρώτη κίνηση', 'yourTurn': 'Η σειρά σου', 'victory': 'Νίκη',
       'defeat': 'Ήττα', 'draw': 'Ισοπαλία',
+      'achievements': 'Επιτεύγματα', 'dailyChallenge': 'Καθημερινή πρόκληση',
     },
     'hu': {
       'settings': 'Beállítások', 'game': 'Játék', 'theme': 'Téma', 'sound': 'Hang',
@@ -399,6 +429,7 @@ class L10n {
       'opponent': 'Ellenfél', 'computer': 'Számítógép', 'passAndPlay': 'Két játékos',
       'firstMove': 'Első lépés', 'yourTurn': 'Te jössz', 'victory': 'Győzelem',
       'defeat': 'Vereség', 'draw': 'Döntetlen',
+      'achievements': 'Eredmények', 'dailyChallenge': 'Napi kihívás',
     },
     'ro': {
       'settings': 'Setări', 'game': 'Joc', 'theme': 'Temă', 'sound': 'Sunet',
@@ -409,6 +440,7 @@ class L10n {
       'opponent': 'Adversar', 'computer': 'Calculator', 'passAndPlay': 'Doi jucători',
       'firstMove': 'Prima mutare', 'yourTurn': 'Rândul tău', 'victory': 'Victorie',
       'defeat': 'Înfrângere', 'draw': 'Remiză',
+      'achievements': 'Realizări', 'dailyChallenge': 'Provocarea zilei',
     },
     'ms': {
       'settings': 'Tetapan', 'game': 'Permainan', 'theme': 'Tema', 'sound': 'Bunyi',
@@ -419,6 +451,7 @@ class L10n {
       'opponent': 'Lawan', 'computer': 'Komputer', 'passAndPlay': 'Dua Pemain',
       'firstMove': 'Gerakan pertama', 'yourTurn': 'Giliran anda', 'victory': 'Menang',
       'defeat': 'Kalah', 'draw': 'Seri',
+      'achievements': 'Pencapaian', 'dailyChallenge': 'Cabaran Harian',
     },
     'fil': {
       'settings': 'Mga Setting', 'game': 'Laro', 'theme': 'Tema', 'sound': 'Tunog',
@@ -429,6 +462,7 @@ class L10n {
       'opponent': 'Kalaban', 'computer': 'Kompyuter', 'passAndPlay': 'Dalawang Manlalaro',
       'firstMove': 'Unang galaw', 'yourTurn': 'Iyong galaw', 'victory': 'Panalo',
       'defeat': 'Talo', 'draw': 'Tabla',
+      'achievements': 'Mga Tagumpay', 'dailyChallenge': 'Hamon ng Araw',
     },
     'bn': {
       'settings': 'সেটিংস', 'game': 'খেলা', 'theme': 'থিম', 'sound': 'শব্দ',
@@ -439,6 +473,7 @@ class L10n {
       'opponent': 'প্রতিপক্ষ', 'computer': 'কম্পিউটার', 'passAndPlay': 'দুজনে খেলুন',
       'firstMove': 'প্রথম চাল', 'yourTurn': 'আপনার পালা', 'victory': 'জয়',
       'defeat': 'পরাজয়', 'draw': 'ড্র',
+      'achievements': 'অর্জন', 'dailyChallenge': 'দৈনিক চ্যালেঞ্জ',
     },
     'he': {
       'settings': 'הגדרות', 'game': 'משחק', 'theme': 'ערכת נושא', 'sound': 'צליל',
@@ -449,6 +484,7 @@ class L10n {
       'opponent': 'יריב', 'computer': 'מחשב', 'passAndPlay': 'שני שחקנים',
       'firstMove': 'מהלך ראשון', 'yourTurn': 'תורך', 'victory': 'ניצחון',
       'defeat': 'הפסד', 'draw': 'תיקו',
+      'achievements': 'הישגים', 'dailyChallenge': 'אתגר יומי',
     },
     'ur': {
       'settings': 'ترتیبات', 'game': 'کھیل', 'theme': 'تھیم', 'sound': 'آواز',
@@ -459,6 +495,7 @@ class L10n {
       'opponent': 'حریف', 'computer': 'کمپیوٹر', 'passAndPlay': 'دو کھلاڑی',
       'firstMove': 'پہلی چال', 'yourTurn': 'آپ کی باری', 'victory': 'فتح',
       'defeat': 'شکست', 'draw': 'برابر',
+      'achievements': 'کارنامے', 'dailyChallenge': 'روزانہ چیلنج',
     },
     'ta': {
       'settings': 'அமைப்புகள்', 'game': 'விளையாட்டு', 'theme': 'தீம்', 'sound': 'ஒலி',
@@ -469,6 +506,7 @@ class L10n {
       'opponent': 'எதிராளி', 'computer': 'கணினி', 'passAndPlay': 'இருவர் விளையாட்டு',
       'firstMove': 'முதல் நகர்வு', 'yourTurn': 'உங்கள் முறை', 'victory': 'வெற்றி',
       'defeat': 'தோல்வி', 'draw': 'சமநிலை',
+      'achievements': 'சாதனைகள்', 'dailyChallenge': 'தினசரி சவால்',
     },
     'te': {
       'settings': 'సెట్టింగ్‌లు', 'game': 'ఆట', 'theme': 'థీమ్', 'sound': 'ధ్వని',
@@ -479,6 +517,7 @@ class L10n {
       'opponent': 'ప్రత్యర్థి', 'computer': 'కంప్యూటర్', 'passAndPlay': 'ఇద్దరు ఆటగాళ్లు',
       'firstMove': 'మొదటి ఎత్తు', 'yourTurn': 'మీ వంతు', 'victory': 'విజయం',
       'defeat': 'ఓటమి', 'draw': 'డ్రా',
+      'achievements': 'విజయాలు', 'dailyChallenge': 'రోజువారీ సవాలు',
     },
   };
 }
