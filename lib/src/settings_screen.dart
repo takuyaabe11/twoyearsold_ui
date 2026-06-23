@@ -198,29 +198,31 @@ class _ToggleRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: theme.thinLine)),
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              label,
-              style: TextStyle(
-                fontSize: 18,
-                color: theme.onSurface,
-                letterSpacing: 0.1,
+    // §4/§6: Material Switch(角丸ピル+塗り)を使わない。テキストの濃淡(オン=主役色・
+    // w700 / オフ=副次色・w400)+ オン時の朱チェックで状態を示す(テーマ行と一貫)。
+    return InkWell(
+      onTap: () => onChanged(!value),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: theme.thinLine)),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 18),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: value ? FontWeight.w700 : FontWeight.w400,
+                  color: value ? theme.textPrimary : theme.textSecondary,
+                  letterSpacing: 0.1,
+                ),
               ),
             ),
-          ),
-          Switch(
-            value: value,
-            onChanged: onChanged,
-            activeTrackColor: theme.accent,
-          ),
-        ],
+            if (value) Icon(Icons.check, size: 18, color: theme.accent),
+          ],
+        ),
       ),
     );
   }
