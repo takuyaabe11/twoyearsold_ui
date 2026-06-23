@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'app_theme.dart';
-import 'l10n.dart';
 import 'primary_action.dart';
 
 /// 勝敗オーバーレイ — DESIGN.md §10.1。全作共通の定型:
@@ -9,22 +8,25 @@ import 'primary_action.dart';
 ///
 /// 各作が勝敗画面を独自実装すると、スクリム濃度・余白・朱の使い方がドリフトする
 /// (監査で Minesweeper/Gobblet/2048 のスクリムが濃すぎた)。ここを単一の出所にする。
-/// [title] は勝敗文(`l10n.victory`/`defeat`/`draw` 等)を呼び出し側が渡す。
+/// 文言は L10n クラスに縛られないよう [newGameLabel]/[homeLabel] を文字列で受け取る
+/// (独自 l10n の作でも使える)。[title] は勝敗文を呼び出し側が渡す。
 /// [accent]=true で見出しを朱に(勝ち等)。[detail] にスコアやレビューを差し込める。
 class GameOverOverlay extends StatelessWidget {
   final AppTheme theme;
-  final L10n l10n;
   final String title;
   final bool accent;
   final Widget? detail;
+  final String newGameLabel;
+  final String homeLabel;
   final VoidCallback onNewGame;
   final VoidCallback onHome;
 
   const GameOverOverlay({
     super.key,
     required this.theme,
-    required this.l10n,
     required this.title,
+    required this.newGameLabel,
+    required this.homeLabel,
     required this.onNewGame,
     required this.onHome,
     this.accent = false,
@@ -60,7 +62,7 @@ class GameOverOverlay extends StatelessWidget {
           const SizedBox(height: 28),
           PrimaryAction(
             theme: theme,
-            label: l10n.newGame,
+            label: newGameLabel,
             onTap: onNewGame,
             expand: false,
           ),
@@ -72,7 +74,7 @@ class GameOverOverlay extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
               child: Text(
-                l10n.home,
+                homeLabel,
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
