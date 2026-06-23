@@ -11,6 +11,7 @@ export 'src/editorial_scaffold.dart';
 export 'src/game_header.dart';
 export 'src/game_over_overlay.dart';
 export 'src/headings.dart';
+export 'src/help_button.dart';
 export 'src/menu_row.dart';
 export 'src/language_pulldown.dart';
 export 'src/primary_action.dart';
