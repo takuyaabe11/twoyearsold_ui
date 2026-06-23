@@ -22,7 +22,7 @@ class BrandFooter extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 3),
             child: Text(
-              '© 2026 TWOYEARSOLD',
+              '© ${DateTime.now().year} TWOYEARSOLD',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 9,
