@@ -62,6 +62,7 @@ class SettingsScreen extends ConsumerWidget {
                           for (final t in AppTheme.all)
                             _ThemeRow(
                               theme: theme,
+                              l10n: l10n,
                               id: t.id,
                               selected: t.id == settings.themeId,
                               onTap: () => ctrl.setTheme(t.id),
@@ -126,11 +127,13 @@ class SettingsScreen extends ConsumerWidget {
 
 class _ThemeRow extends StatelessWidget {
   final AppTheme theme;
+  final L10n l10n;
   final String id;
   final bool selected;
   final VoidCallback onTap;
   const _ThemeRow({
     required this.theme,
+    required this.l10n,
     required this.id,
     required this.selected,
     required this.onTap,
@@ -167,7 +170,7 @@ class _ThemeRow extends StatelessWidget {
             const SizedBox(width: 14),
             Expanded(
               child: Text(
-                themeName(id),
+                themeName(l10n, id),
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: selected ? FontWeight.w700 : FontWeight.w400,

@@ -65,7 +65,8 @@ SYMBOLS_ALWAYS = set('★☆')
 # 各ゲームの文言ソース。dart=共通形式の _data マップ, arb=NumberPlace 形式。
 SHARED_L10N = os.path.join(ROOT, 'twoyearsold_ui/lib/src/l10n.dart')
 GAMES = {
-    'Reversi':     {'dart': ['lib/l10n/rv_l10n.dart'], 'shared': True},
+    'Reversi':     {'dart': ['lib/l10n/rv_l10n.dart',
+                             'lib/presentation/learn/learn_screen.dart'], 'shared': True},
     '2048':        {'dart': ['lib/l10n/tf_l10n.dart'], 'shared': True},
     'Gobblet':     {'dart': ['lib/l10n/gb_l10n.dart'], 'shared': True},
     'AirHockey':   {'dart': ['lib/l10n/ah_l10n.dart'], 'shared': True},
