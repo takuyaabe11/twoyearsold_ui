@@ -68,6 +68,13 @@ class L10n {
 
   static bool isSupported(String code) => supported.any((l) => l.code == code);
 
+  /// 設定コード('zh_Hant' / 'pt_BR' 等)を `Locale` に変換(null=端末追従)。
+  static Locale? localeFromCode(String? code) {
+    if (code == null) return null;
+    final parts = code.split('_');
+    return parts.length == 2 ? Locale(parts[0], parts[1]) : Locale(parts[0]);
+  }
+
   bool get isRtl => rtl.contains(code);
 
   /// 明示コード(null=端末言語)から L10n を解決。未対応は en にフォールバック。
