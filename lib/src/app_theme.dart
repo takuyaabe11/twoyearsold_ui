@@ -45,6 +45,11 @@ class AppTheme {
   /// 選択・関連の面ハイライト。
   final Color selectionFill;
 
+  /// accent(または強い暗色)の塗りの上に乗せる文字・記号の色。
+  /// accent は全テーマで十分暗い(朱 or 墨)ため、既定はオフホワイトで共通。
+  /// 生 hex 直書き(2048 タイル文字・AirHockey 計器パネル等)の受け皿(§1.1)。
+  final Color onAccent;
+
   const AppTheme({
     required this.id,
     required this.brightness,
@@ -68,6 +73,7 @@ class AppTheme {
     required this.errorText,
     required this.errorFill,
     required this.selectionFill,
+    this.onAccent = const Color(0xFFF7F7F4),
   });
 
   /// 表示言語コード(例 'ja' / 'zh_Hant')に応じたフォントフォールバック列。
@@ -126,6 +132,7 @@ class AppTheme {
         errorText: errorText,
         errorFill: errorFill,
         selectionFill: selectionFill,
+        onAccent: onAccent,
       );
 
   /// エディトリアル・ダーク(全アプリの第一既定。黒地 × オフホワイト × 朱)。

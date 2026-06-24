@@ -15,11 +15,15 @@ class SettingsState {
   final bool soundEnabled;
   final bool animationsEnabled;
 
+  /// 触覚フィードバック(ハプティクス)。§5.4。off で全作の振動を止める。
+  final bool hapticsEnabled;
+
   const SettingsState({
     this.themeId = 'editorial_dark',
     this.localeCode,
     this.soundEnabled = true,
     this.animationsEnabled = true,
+    this.hapticsEnabled = true,
   });
 
   AppTheme get theme => AppTheme.byId(themeId);
@@ -30,12 +34,14 @@ class SettingsState {
     bool clearLocale = false,
     bool? soundEnabled,
     bool? animationsEnabled,
+    bool? hapticsEnabled,
   }) =>
       SettingsState(
         themeId: themeId ?? this.themeId,
         localeCode: clearLocale ? null : (localeCode ?? this.localeCode),
         soundEnabled: soundEnabled ?? this.soundEnabled,
         animationsEnabled: animationsEnabled ?? this.animationsEnabled,
+        hapticsEnabled: hapticsEnabled ?? this.hapticsEnabled,
       );
 
   Map<String, dynamic> toJson() => {
@@ -43,6 +49,7 @@ class SettingsState {
         if (localeCode != null) 'locale': localeCode,
         'sound': soundEnabled,
         'animations': animationsEnabled,
+        'haptics': hapticsEnabled,
       };
 
   factory SettingsState.fromJson(Map<String, dynamic> json) => SettingsState(
@@ -50,6 +57,7 @@ class SettingsState {
         localeCode: json['locale'] as String?,
         soundEnabled: json['sound'] as bool? ?? true,
         animationsEnabled: json['animations'] as bool? ?? true,
+        hapticsEnabled: json['haptics'] as bool? ?? true,
       );
 }
 
@@ -70,6 +78,7 @@ class SettingsController extends Notifier<SettingsState> {
   void setTheme(String id) => _update(state.copyWith(themeId: id));
   void setSound(bool v) => _update(state.copyWith(soundEnabled: v));
   void setAnimations(bool v) => _update(state.copyWith(animationsEnabled: v));
+  void setHaptics(bool v) => _update(state.copyWith(hapticsEnabled: v));
 
   /// null で「端末の言語に従う」。
   void setLocale(String? code) => _update(

@@ -111,6 +111,12 @@ class SettingsScreen extends ConsumerWidget {
                             value: settings.animationsEnabled,
                             onChanged: ctrl.setAnimations,
                           ),
+                          _ToggleRow(
+                            theme: theme,
+                            label: l10n.haptics,
+                            value: settings.hapticsEnabled,
+                            onChanged: ctrl.setHaptics,
+                          ),
                         ],
                       ),
                     ),
