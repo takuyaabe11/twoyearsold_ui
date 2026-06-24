@@ -6,8 +6,10 @@ library;
 
 export 'src/app_theme.dart';
 export 'src/motion.dart';
+export 'src/back_button.dart';
 export 'src/brand_footer.dart';
 export 'src/choice_row.dart';
+export 'src/footer_link.dart';
 export 'src/editorial_scaffold.dart';
 export 'src/game_header.dart';
 export 'src/game_over_overlay.dart';
