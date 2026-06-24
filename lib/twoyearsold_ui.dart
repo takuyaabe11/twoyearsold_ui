@@ -17,6 +17,7 @@ export 'src/menu_row.dart';
 export 'src/language_pulldown.dart';
 export 'src/primary_action.dart';
 export 'src/section_label.dart';
+export 'src/sound_service.dart';
 export 'src/star_picker.dart';
 export 'src/stat_tile.dart';
 export 'src/theme_name.dart';
