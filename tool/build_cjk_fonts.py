@@ -56,6 +56,12 @@ SCRIPT_FONTS = {
     'te':      ('Noto Sans Telugu',      'NotoSansTelugu'),
 }
 
+# コード内リテラルで描画する記号(★☆ 等)は L10n 文字列に現れず corpus に入らないため、
+# 放置すると盤面/統計の星が豆腐化する(Arimo に無く、地域フォントにフォールバックして初めて出る)。
+# NotoSansJP は fallbackForLocale() で全ロケールのフォールバック列に常在するので、ここに同梱すれば
+# 言語に依らず描画できる。— DESIGN.md §2.1 / AppTheme.fallbackForLocale。
+SYMBOLS_ALWAYS = set('★☆')
+
 # 各ゲームの文言ソース。dart=共通形式の _data マップ, arb=NumberPlace 形式。
 SHARED_L10N = os.path.join(ROOT, 'twoyearsold_ui/lib/src/l10n.dart')
 GAMES = {
@@ -169,6 +175,9 @@ def build_game(game, cfg):
         per_locale = merge(per_locale, collect_dart(os.path.join(src_dir, rel)))
     if 'arb' in cfg:
         per_locale = merge(per_locale, collect_arb(os.path.join(src_dir, cfg['arb'])))
+
+    # コードリテラル記号(★☆)を NotoSansJP(全ロケールの fallback に常在)へ同梱。
+    per_locale.setdefault('ja', set()).update(SYMBOLS_ALWAYS)
 
     fonts_dir = os.path.join(src_dir, 'assets/fonts')
     os.makedirs(fonts_dir, exist_ok=True)
