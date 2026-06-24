@@ -17,6 +17,9 @@ class GameHeader extends StatelessWidget {
   /// 中央の控えめな表示(任意)。
   final Widget? center;
 
+  /// やり直し(右上 refresh)の左に並べる固有の追加アクション(ヒント/アンドゥ等)。
+  final List<Widget> trailing;
+
   const GameHeader({
     super.key,
     required this.theme,
@@ -24,6 +27,7 @@ class GameHeader extends StatelessWidget {
     this.onRestart,
     this.restartTooltip,
     this.center,
+    this.trailing = const [],
   });
 
   @override
@@ -39,6 +43,7 @@ class GameHeader extends StatelessWidget {
           const Spacer(),
           if (center != null) center!,
           const Spacer(),
+          ...trailing,
           // 右上を戻ると対称に保つため、refresh が無くても同幅を確保。
           if (onRestart != null)
             IconButton(
@@ -46,7 +51,7 @@ class GameHeader extends StatelessWidget {
               tooltip: restartTooltip,
               onPressed: onRestart,
             )
-          else
+          else if (trailing.isEmpty)
             const SizedBox(width: 48),
         ],
       ),
