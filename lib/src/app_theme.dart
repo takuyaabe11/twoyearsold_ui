@@ -147,7 +147,7 @@ class AppTheme {
     boxLine: Color(0xFF55555A),
     textPrimary: Color(0xFFF4F4F2),
     textSecondary: Color(0xFF9A9A98),
-    textMuted: Color(0xFF5C5C5E),
+    textMuted: Color(0xFF79797B), // WCAG AA(対 background 4.58)。旧 #5C5C5E は 2.97 で未達。
     accent: Color(0xFFE2563C),
     errorText: Color(0xFFE2563C),
     errorFill: Color(0xFF2A1613),
@@ -166,7 +166,7 @@ class AppTheme {
     boxLine: Color(0xFF1A1A18),
     textPrimary: Color(0xFF111110),
     textSecondary: Color(0xFF6A6A66),
-    textMuted: Color(0xFFA0A09A),
+    textMuted: Color(0xFF73736F), // WCAG AA(対 background 4.54)。旧 #A0A09A は 2.52 で未達。
     accent: Color(0xFFC8412C),
     errorText: Color(0xFFC8412C),
     errorFill: Color(0xFFF3DCD6),
@@ -185,7 +185,7 @@ class AppTheme {
     boxLine: Color(0xFF7E725A),
     textPrimary: Color(0xFF2B2620),
     textSecondary: Color(0xFF6B5E48),
-    textMuted: Color(0xFF9A8E76),
+    textMuted: Color(0xFF7A705D), // WCAG AA(対 background 4.52)。旧 #9A8E76 は 2.99 で未達。
     accent: Color(0xFF2B2620),
     errorText: Color(0xFFB0473A),
     errorFill: Color(0xFFF0D9D2),
@@ -204,7 +204,7 @@ class AppTheme {
     boxLine: Color(0xFF7A6A4C),
     textPrimary: Color(0xFF3A2E1E),
     textSecondary: Color(0xFF6E5A3E),
-    textMuted: Color(0xFF9C8862),
+    textMuted: Color(0xFF726348), // WCAG AA(対 background 4.58)。旧 #9C8862 は 2.70 で未達。
     accent: Color(0xFF3A2E1E),
     errorText: Color(0xFFA84634),
     errorFill: Color(0xFFE4C8BC),
@@ -223,7 +223,7 @@ class AppTheme {
     boxLine: Color(0xFF7A858E),
     textPrimary: Color(0xFF1F2933),
     textSecondary: Color(0xFF52606B),
-    textMuted: Color(0xFF93A0AA),
+    textMuted: Color(0xFF6B757C), // WCAG AA(対 background 4.55)。旧 #93A0AA は 2.58 で未達。
     accent: Color(0xFF1F2933),
     errorText: Color(0xFFB0473A),
     errorFill: Color(0xFFF0DAD5),
@@ -242,7 +242,7 @@ class AppTheme {
     boxLine: Color(0xFF8A7F66),
     textPrimary: Color(0xFFEDE6D6),
     textSecondary: Color(0xFFB9AE97),
-    textMuted: Color(0xFF7E7460),
+    textMuted: Color(0xFF8B8270), // WCAG AA(対 background 4.51)。旧 #7E7460 は 3.72 で未達。
     accent: Color(0xFFEDE6D6),
     errorText: Color(0xFFD9776A),
     errorFill: Color(0xFF3A2A26),
