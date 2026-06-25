@@ -22,6 +22,9 @@ class StatTile extends StatelessWidget {
   /// 値を accent 色にする(勝率など主役の1点)。既定は textPrimary。
   final bool emphasize;
 
+  /// 値の色を明示指定する(危険=errorText 等)。指定時は [emphasize] より優先。
+  final Color? valueColor;
+
   /// 横並びで等幅に詰めるとき true(`Expanded` でラップ)。
   final bool expand;
 
@@ -34,6 +37,7 @@ class StatTile extends StatelessWidget {
     required this.label,
     this.large = true,
     this.emphasize = false,
+    this.valueColor,
     this.expand = false,
     this.align = CrossAxisAlignment.start,
   });
@@ -53,7 +57,7 @@ class StatTile extends StatelessWidget {
             height: 1.0,
             fontWeight: FontWeight.w700,
             letterSpacing: -0.5,
-            color: emphasize ? theme.accent : theme.textPrimary,
+            color: valueColor ?? (emphasize ? theme.accent : theme.textPrimary),
           ),
         ),
         const SizedBox(height: 4),
