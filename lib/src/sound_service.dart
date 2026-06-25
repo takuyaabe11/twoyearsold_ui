@@ -37,6 +37,7 @@ class SoundService {
 
   final Map<Sfx, AudioPlayer> _players = {};
   bool _ready = false;
+  bool _unlocked = false;
 
   Future<void> init() async {
     if (_ready) return;
@@ -62,6 +63,21 @@ class SoundService {
         // 個別の読み込み失敗は無視(その音は鳴らないだけ)。
       }
     }
+  }
+
+  /// Web の自動再生ポリシー対策。最初のユーザー操作(タップ/スワイプ/キー)で一度だけ呼ぶと、
+  /// 音量0のプレイヤーを resume して AudioContext を「解錠」する(無音)。以後の効果音が
+  /// 初回から確実に鳴る。トランジェント活性化の窓内で呼ぶこと。安全(例外を投げない)。
+  Future<void> unlock() async {
+    if (_unlocked || _players.isEmpty) return;
+    _unlocked = true;
+    final p = _players.values.first;
+    try {
+      await p.setVolume(0);
+      await p.resume();
+      await p.stop();
+      await p.setVolume(1);
+    } catch (_) {}
   }
 
   /// [rate] で再生ピッチ/速度を微調整できる(裏返しの揺らぎ・アクセント用)。
