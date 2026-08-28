@@ -29,6 +29,7 @@ import urllib.parse
 import urllib.request
 
 from fontTools.ttLib import TTFont
+from fontTools import subset as ftsubset
 
 # このスクリプトは twoyearsold_ui リポジトリ内にあるが、対象は monorepo ルート
 # (twoyearsold/) 配下の各ゲーム。ROOT はファイル位置の3階層上(tool->twoyearsold_ui->root)。
@@ -70,7 +71,10 @@ GAMES = {
     '2048':        {'dart': ['lib/l10n/tf_l10n.dart'], 'shared': True},
     'Gobblet':     {'dart': ['lib/l10n/gb_l10n.dart'], 'shared': True},
     'AirHockey':   {'dart': ['lib/l10n/ah_l10n.dart'], 'shared': True},
+    'FreeThrow':   {'dart': ['lib/l10n/ft_l10n.dart'], 'shared': True},
+    'PK':          {'dart': ['lib/l10n/pk_l10n.dart'], 'shared': True},
     'Minesweeper': {'dart': ['lib/l10n/ms_l10n.dart'], 'shared': True},
+    'Solitaire':   {'dart': ['lib/l10n/sol_l10n.dart'], 'shared': True},
     'NumberPlace': {'arb': 'lib/l10n', 'shared': False},
 }
 
@@ -163,6 +167,15 @@ def build_subset(gf_family, chars):
     open(tmp, 'wb').write(woff2)
     f = TTFont(tmp)
     f.flavor = None  # woff2 -> 素の ttf
+    # Google Fonts が text= を無視してフル版を返すことがある(実測: Noto Sans TC が
+    # 20,710 グリフ = 7MB)。取りこぼすと Web の初回読み込みが致命的に重くなるため、
+    # 受け取った font を必ずローカルでもサブセットして必要字だけに畳む。
+    if len(f.getGlyphOrder()) > len(wanted) * 4 + 64:
+        opts = ftsubset.Options()
+        opts.notdef_outline = True
+        sub = ftsubset.Subsetter(options=opts)
+        sub.populate(text=wanted)
+        sub.subset(f)
     return f, len(wanted)
 
 
