@@ -40,12 +40,20 @@ Future<void> loadGoldenFonts() async {
       await (FontLoader(family)
             ..addFont(Future.value(ByteData.sublistView(bytes))))
           .load();
-      // 既定書体(Helvetica Neue)は端末のフォントで、テストには無い。Web / Android で実際に
-      // 使われる代替の Arimo を、その名でも登録する(登録しないとラテン文字が箱になる)。
+      // 既定書体(Helvetica Neue)と代替列の Helvetica / Arial は端末のフォントで、テストには
+      // 無い。Web / Android で実際に使われる Arimo を、それらの名でも登録する。登録しないと
+      // テスト既定の箱フォントが先に拾われ、ラテン文字と一部の漢字(一 二 三 など)が箱になる。
       if (family == 'Arimo') {
-        await (FontLoader(AppTheme.editorialDark.fontFamily)
-              ..addFont(Future.value(ByteData.sublistView(bytes))))
-            .load();
+        for (final alias in {
+          AppTheme.editorialDark.fontFamily,
+          AppTheme.editorialDark.displayFontFamily,
+          'Helvetica',
+          'Arial',
+        }) {
+          await (FontLoader(alias)
+                ..addFont(Future.value(ByteData.sublistView(bytes))))
+              .load();
+        }
       }
     }
   }

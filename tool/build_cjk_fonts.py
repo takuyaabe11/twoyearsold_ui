@@ -137,6 +137,31 @@ def collect_arb(arb_dir):
     return res
 
 
+def code_symbols(game, cfg):
+    """lib/ の文字列リテラルに直書きされた、文字ではない非 ASCII の記号(✓ ⚑ → など)。
+    文言ファイル(cfg の dart / arb)は別途 corpus に入るので除く。"""
+    import unicodedata
+    src_dir = os.path.join(ROOT, game)
+    skip = {os.path.normpath(os.path.join(src_dir, rel)) for rel in cfg.get('dart', [])}
+    out = set()
+    for dp, _, fns in os.walk(os.path.join(src_dir, 'lib')):
+        if 'arb' in cfg and os.path.normpath(dp) == os.path.normpath(os.path.join(src_dir, cfg['arb'])):
+            continue
+        for fn in fns:
+            path = os.path.normpath(os.path.join(dp, fn))
+            if not fn.endswith('.dart') or path in skip:
+                continue
+            code = '\n'.join(l for l in open(path, encoding='utf-8').read().splitlines()
+                             if not l.lstrip().startswith('//'))
+            # 行末コメントを落としてから拾う(コメント中の記号は描画されない)。
+            code = re.sub(r"\s//[^\n'\"]*$", '', code, flags=re.M)
+            for lit in _string_literals(code):
+                for ch in lit:
+                    if ord(ch) > 0x7F and unicodedata.category(ch)[0] in 'SPN':
+                        out.add(ch)
+    return out
+
+
 def merge(*maps):
     out = {}
     for mp in maps:
@@ -192,8 +217,11 @@ def wanted_by_family(game, cfg):
     if 'arb' in cfg:
         per_locale = merge(per_locale, collect_arb(os.path.join(src_dir, cfg['arb'])))
 
-    # コードリテラル記号(★☆)を NotoSansJP(全ロケールの fallback に常在)へ同梱。
-    per_locale.setdefault('ja', set()).update(SYMBOLS_ALWAYS)
+    # コードリテラル記号(★☆ ✓ など)を NotoSansJP(全ロケールの fallback に常在)へ同梱。
+    # 文言ファイルの外に書いた記号は corpus に入らないので、コードから拾う。地域フォントに
+    # 無い記号(例: ⚑)は --check が「未収録」と報告する = 端末フォント頼みで、オフラインの
+    # Web では豆腐になる。その場合はアイコンか自前描画に替える。
+    per_locale.setdefault('ja', set()).update(SYMBOLS_ALWAYS | code_symbols(game, cfg))
 
     # 同じ出力ファミリ(asset_family)に複数ロケールが割り当たる場合(例: ar と fa は
     # どちらも NotoSansArabic)、文字集合を union してから1ファイルに焼く。
