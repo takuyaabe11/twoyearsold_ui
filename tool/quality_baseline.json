@@ -1,31 +1,25 @@
 {
   "AirHockey": [
     "semantics",
-    "text_scale",
     "keyboard",
     "golden"
   ],
   "FreeThrow": [
     "semantics",
-    "text_scale",
     "keyboard",
-    "shared_game_over",
     "golden"
   ],
   "Gobblet": [
     "semantics",
-    "text_scale",
     "keyboard",
     "golden"
   ],
   "Minesweeper": [
     "semantics",
-    "text_scale",
     "keyboard",
     "golden"
   ],
   "NumberPlace": [
-    "text_scale",
     "keyboard",
     "golden"
   ],
@@ -36,9 +30,6 @@
     "golden"
   ],
   "Reversi": [
-    "text_scale",
-    "keyboard",
-    "shared_game_over",
     "golden"
   ],
   "Solitaire": [

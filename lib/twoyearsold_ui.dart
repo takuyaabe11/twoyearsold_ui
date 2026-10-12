@@ -17,6 +17,7 @@ export 'src/formatters.dart';
 export 'src/game_clock.dart';
 export 'src/game_feedback.dart';
 export 'src/game_keys.dart';
+export 'src/grid_semantics.dart';
 export 'src/game_header.dart';
 export 'src/game_over_overlay.dart';
 export 'src/haptics.dart';
