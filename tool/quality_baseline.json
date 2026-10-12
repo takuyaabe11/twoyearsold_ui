@@ -1,38 +1,8 @@
 {
-  "AirHockey": [
-    "semantics",
-    "keyboard",
-    "golden"
-  ],
-  "FreeThrow": [
-    "semantics",
-    "keyboard",
-    "golden"
-  ],
-  "Gobblet": [
-    "semantics",
-    "keyboard",
-    "golden"
-  ],
-  "Minesweeper": [
-    "semantics",
-    "keyboard",
-    "golden"
-  ],
-  "NumberPlace": [
-    "keyboard",
-    "golden"
-  ],
   "PK": [
     "semantics",
     "text_scale",
     "keyboard",
-    "golden"
-  ],
-  "Reversi": [
-    "golden"
-  ],
-  "Solitaire": [
     "golden"
   ]
 }

@@ -103,7 +103,7 @@ def shared_game_over(game):
 
 def golden(game):
     """見た目の固定: ゴールデンテストがある。"""
-    rx = re.compile(r'matchesGoldenFile')
+    rx = re.compile(r'matchesGoldenFile|\bexpectGolden\(')  # 後者は共有ハーネス
     return any(rx.search(src) for _, src in _dart(game, 'test'))
 
 
