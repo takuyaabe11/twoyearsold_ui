@@ -87,8 +87,9 @@ def keyboard(game):
 
 
 def shared_sound(game):
-    """音: 共有 SoundService を使う(複製すると Web の自動再生対策 unlock() が抜ける)。"""
-    return not _lib_has(game, r'^class SoundService\b|hide [^;]*\bSoundService\b')
+    """音: プレイヤーの扱いは共有(SoundService / SoundBank)に任せ、audioplayers を直接使わない
+    (各作で書き直すと Web の自動再生対策 unlock() が抜ける)。語彙は各作に置いてよい。"""
+    return not _lib_has(game, r"package:audioplayers/")
 
 
 def shared_game_over(game):
@@ -139,7 +140,7 @@ CHECKS = [
     ('motion', '演出 off', motion),
     ('text_scale', '文字拡大', text_scale),
     ('keyboard', 'キーボード', keyboard),
-    ('shared_sound', '共有の音', shared_sound),
+    ('shared_sound', '共有の音の基盤', shared_sound),
     ('shared_game_over', '共有の終了画面', shared_game_over),
     ('golden', 'ゴールデン', golden),
     ('web_meta', 'Web の体裁(OG)', web_meta),
