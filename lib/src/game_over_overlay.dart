@@ -66,17 +66,26 @@ class GameOverOverlay extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: theme.displayFontFamily,
-              fontFamilyFallback: theme.fontFamilyFallback,
-              fontSize: 44,
-              height: 1.0,
-              fontWeight: FontWeight.w700,
-              letterSpacing: -1.4,
-              color: accent ? theme.accent : theme.textPrimary,
+          // 長い見出し(例: 日本語の「プレイヤー1の勝ち」)は 1 行のまま幅に収める。
+          // 折り返すと盤の上で 2 行に割れ、収めないと左右が切れる。
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                style: TextStyle(
+                  fontFamily: theme.displayFontFamily,
+                  fontFamilyFallback: theme.fontFamilyFallback,
+                  fontSize: 44,
+                  height: 1.0,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: -1.4,
+                  color: accent ? theme.accent : theme.textPrimary,
+                ),
+              ),
             ),
           ),
           if (detail != null) ...[

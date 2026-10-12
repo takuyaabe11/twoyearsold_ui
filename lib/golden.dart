@@ -40,6 +40,13 @@ Future<void> loadGoldenFonts() async {
       await (FontLoader(family)
             ..addFont(Future.value(ByteData.sublistView(bytes))))
           .load();
+      // 既定書体(Helvetica Neue)は端末のフォントで、テストには無い。Web / Android で実際に
+      // 使われる代替の Arimo を、その名でも登録する(登録しないとラテン文字が箱になる)。
+      if (family == 'Arimo') {
+        await (FontLoader(AppTheme.editorialDark.fontFamily)
+              ..addFont(Future.value(ByteData.sublistView(bytes))))
+            .load();
+      }
     }
   }
   final root = Platform.environment['FLUTTER_ROOT'];
