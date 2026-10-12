@@ -42,6 +42,10 @@ class SoundService {
   bool _ready = false;
   bool _unlocked = false;
 
+  // 解錠に使っている最中の音と、その完了(この間その音は音量 0 で、終わりに stop される)。
+  Sfx? _unlockingSfx;
+  Future<void>? _unlocking;
+
   Future<void> init() async {
     if (_ready) return;
     _ready = true;
@@ -80,12 +84,17 @@ class SoundService {
     if (_unlocked || _players.isEmpty) return;
     _unlocked = true;
     final p = _players.values.first;
-    try {
-      await p.setVolume(0);
-      await p.resume();
-      await p.stop();
-      await p.setVolume(1);
-    } catch (_) {}
+    _unlockingSfx = _players.keys.first;
+    _unlocking = () async {
+      try {
+        await p.setVolume(0);
+        await p.resume();
+        await p.stop();
+        await p.setVolume(1);
+      } catch (_) {}
+      _unlockingSfx = null;
+    }();
+    await _unlocking;
   }
 
   /// [rate] で再生ピッチ/速度を微調整できる(裏返しの揺らぎ・アクセント用)。
@@ -93,6 +102,11 @@ class SoundService {
   void play(Sfx sfx, {double rate = 1.0}) {
     final p = _players[sfx];
     if (p == null) return;
+    if (sfx == _unlockingSfx) {
+      // 解錠と同じ操作で鳴らす音(最初の一手など)。無音のまま切られないよう、解錠の後に鳴らす。
+      _unlocking!.then((_) => play(sfx, rate: rate));
+      return;
+    }
     p.stop().then((_) async {
       if (rate != 1.0) {
         try {

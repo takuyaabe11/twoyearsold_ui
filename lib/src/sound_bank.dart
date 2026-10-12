@@ -18,6 +18,11 @@ class SoundBank {
   bool _ready = false;
   bool _unlocked = false;
 
+  // 解錠に使っている最中のプレイヤーと、その完了。この間そのプレイヤーは音量 0 で、
+  // 終わりに stop される。
+  String? _unlockingId;
+  Future<void>? _unlocking;
+
   bool has(String id) => _players.containsKey(id);
 
   /// 他アプリの音と混ぜ、消音スイッチに従う。最初の [load] の前に一度だけ効く。
@@ -66,6 +71,11 @@ class SoundBank {
   void fire(String id, {double? rate, double? volume}) {
     final p = _players[id];
     if (p == null) return;
+    if (id == _unlockingId) {
+      // 解錠と同じ操作で鳴らす音(最初の一打など)。無音のまま切られないよう、解錠の後に鳴らす。
+      _unlocking!.then((_) => fire(id, rate: rate, volume: volume));
+      return;
+    }
     if (rate != null) _quiet(p.setPlaybackRate(rate));
     if (volume != null) _quiet(p.setVolume(volume));
     _quiet(p.seek(Duration.zero));
@@ -97,12 +107,17 @@ class SoundBank {
     if (id == null) return; // まだ何も読み込めていない。次の操作でやり直す。
     _unlocked = true;
     final p = _players[id]!;
-    try {
-      await p.setVolume(0);
-      await p.resume();
-      await p.stop();
-      await p.setVolume(1);
-    } catch (_) {}
+    _unlockingId = id;
+    _unlocking = () async {
+      try {
+        await p.setVolume(0);
+        await p.resume();
+        await p.stop();
+        await p.setVolume(1);
+      } catch (_) {}
+      _unlockingId = null;
+    }();
+    await _unlocking;
   }
 
   Future<void> dispose() async {

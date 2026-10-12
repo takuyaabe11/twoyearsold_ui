@@ -4,6 +4,7 @@ import 'package:twoyearsold_ui/twoyearsold_ui.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  firstSoundSurvivesUnlock();
 
   late List<String> log;
   late SoundBank bank;
@@ -89,5 +90,32 @@ void main() {
     log.clear();
     await bank.unlock();
     expect(log, isNotEmpty);
+  });
+}
+
+// 解錠は最初の単発プレイヤーを無音で一度鳴らす。同じ操作でその音を鳴らすと(例: 最初の
+// 一投の放球音)、無音のまま鳴って stop で切られていた。解錠が済んでから鳴らす。
+void firstSoundSurvivesUnlock() {
+  test('a sound fired while it is being used to unlock plays after, audibly',
+      () async {
+    final log = <String>[];
+    final bank = recordingSoundBank(log);
+    await bank.load('shoot', 'sounds/place.wav');
+    await bank.load('rim', 'sounds/rim0.wav');
+    log.clear();
+
+    final unlocking = bank.unlock(); // 操作の入口
+    bank.fire('shoot'); // 同じ操作で鳴る音
+    bank.fire('rim', volume: 0.9); // 別のプレイヤーは待たせない
+    await unlocking;
+    await Future<void>.delayed(Duration.zero);
+
+    final restored = log.indexOf('shoot.setVolume(1.0)');
+    final played = log.lastIndexOf('shoot.resume()');
+    expect(restored, greaterThan(-1));
+    expect(played, greaterThan(restored),
+        reason: '音量を戻した後に鳴らす: $log');
+    expect(log.where((e) => e == 'shoot.resume()'), hasLength(2)); // 無音の解錠 + 本番
+    expect(log.indexOf('rim.resume()'), lessThan(restored));
   });
 }
