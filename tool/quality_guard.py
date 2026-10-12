@@ -32,7 +32,8 @@ def games():
     out = []
     for name in sorted(os.listdir(ROOT)):
         d = os.path.join(ROOT, name)
-        if name == 'twoyearsold_ui' or not os.path.isdir(d):
+        # 隠しディレクトリ(作業用の写しなど)と共有パッケージはゲームではない。
+        if name.startswith('.') or name == 'twoyearsold_ui' or not os.path.isdir(d):
             continue
         if os.path.exists(os.path.join(d, 'lib/main.dart')) and os.path.isdir(os.path.join(d, 'web')):
             out.append(name)
@@ -77,13 +78,16 @@ def motion(game):
 
 
 def text_scale(game):
-    """文字拡大: 拡大率を受け止める手当てがある(上限つき拡大など)。"""
-    return _lib_has(game, r'textScalerOf|withClampedTextScaling|textScaleFactor')
+    """文字拡大: 倍率の上限がある(共有の TwoyearsoldApp が全画面に掛ける。独自の App は自前で)
+    うえで、文字拡大時の画面をゴールデンで固定している。"""
+    clamped = _lib_has(game, r'\bTwoyearsoldApp\(|withClampedTextScaling|textScalerOf')
+    rx = re.compile(r'textScale:')
+    return clamped and any(rx.search(src) for _, src in _dart(game, 'test'))
 
 
 def keyboard(game):
-    """キーボード: Web / デスクトップ向けのキー操作がある。"""
-    return _lib_has(game, r'onKeyEvent|CallbackShortcuts|\bShortcuts\(|KeyboardListener|HardwareKeyboard')
+    """キーボード: Web / デスクトップ向けのキー操作がある(共有の GameKeys か、自前の処理)。"""
+    return _lib_has(game, r'\bGameKeys\(|onKeyEvent|CallbackShortcuts|\bShortcuts\(|KeyboardListener')
 
 
 def shared_sound(game):

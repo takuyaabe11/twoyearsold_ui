@@ -34,7 +34,7 @@ COPIED = {
 def games():
     out = []
     for name in sorted(os.listdir(ROOT)):
-        if os.path.exists(os.path.join(ROOT, name, 'game.json')):
+        if not name.startswith('.') and os.path.exists(os.path.join(ROOT, name, 'game.json')):
             out.append(name)
     return out
 
