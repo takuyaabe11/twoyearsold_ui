@@ -3,8 +3,7 @@
     "semantics",
     "text_scale",
     "keyboard",
-    "golden",
-    "readme"
+    "golden"
   ],
   "FreeThrow": [
     "semantics",
@@ -28,8 +27,7 @@
   "NumberPlace": [
     "text_scale",
     "keyboard",
-    "golden",
-    "readme"
+    "golden"
   ],
   "PK": [
     "semantics",
@@ -44,7 +42,6 @@
     "golden"
   ],
   "Solitaire": [
-    "golden",
-    "readme"
+    "golden"
   ]
 }
