@@ -88,16 +88,27 @@ class _ChoiceItem extends StatelessWidget {
     final color = disabled
         ? theme.textMuted.withValues(alpha: 0.4)
         : (selected ? theme.textPrimary : theme.textMuted);
-    final text = Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: ChoiceRow.hitPadX, vertical: ChoiceRow.hitPadY),
-      child: Text(
-        label,
-        style: TextStyle(
-          fontSize: fontSize,
-          fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
-          color: color,
-          letterSpacing: 0.2,
+    // 記号 1 つだけの短いラベル(「♠」など)でも幅 44px を確保する。文字は行頭側に置いたまま、
+    // 当たり判定だけ後ろへ伸ばす。widthFactor を付けて、長いラベルは文字の幅のままにする
+    // (付けないと行いっぱいに広がり、選択肢が 1 行に 1 つずつ並んでしまう)。
+    final text = ConstrainedBox(
+      constraints: const BoxConstraints(minWidth: 44),
+      child: Align(
+        alignment: AlignmentDirectional.centerStart,
+        widthFactor: 1,
+        heightFactor: 1,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+              horizontal: ChoiceRow.hitPadX, vertical: ChoiceRow.hitPadY),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: fontSize,
+              fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
+              color: color,
+              letterSpacing: 0.2,
+            ),
+          ),
         ),
       ),
     );

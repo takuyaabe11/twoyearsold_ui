@@ -140,11 +140,14 @@ Future<void> expectGolden(WidgetTester tester, String name) async {
 ///
 /// 盤のマスは対象外: 同じ大きさの操作要素が 16 個以上並んでいれば格子とみなす。マスの
 /// 大きさは盤の升目数と画面幅で決まり、余白を足して広げられる類のものではない。
+/// 格子にならない盤の駒(列ごとに枚数が違うトランプの札など)は、[boardPiece] でその
+/// ウィジェットを指定して対象外にする(自身・祖先・すぐ内側のどれかが当てはまれば盤の駒)。
 ///
 /// 測れるのは GestureDetector / InkWell / ボタン類。Listener で直接ポインタを受ける盤
 /// (3D の盤など)は対象外。
-List<String> smallTapTargets(WidgetTester tester, {double min = 44}) {
-  final found = _tappables(tester);
+List<String> smallTapTargets(WidgetTester tester,
+    {double min = 44, bool Function(Widget widget)? boardPiece}) {
+  final found = _tappables(tester, boardPiece: boardPiece);
   // 格子(盤のマス)を除く。
   final bySize = <String, int>{};
   String key(Rect r) => '${r.width.round()}x${r.height.round()}';
@@ -162,10 +165,12 @@ List<String> smallTapTargets(WidgetTester tester, {double min = 44}) {
 }
 
 /// いま画面にある操作要素(当たり判定の矩形と呼び名)。
-List<({Rect rect, String what})> _tappables(WidgetTester tester) {
+List<({Rect rect, String what})> _tappables(WidgetTester tester,
+    {bool Function(Widget widget)? boardPiece}) {
   final screen =
       Offset.zero & tester.view.physicalSize / tester.view.devicePixelRatio;
   final found = <({Rect rect, String what})>[];
+  final seen = <Rect>{};
   for (final e in tester.allElements) {
     final w = e.widget;
     final tappable = switch (w) {
@@ -194,10 +199,38 @@ List<({Rect rect, String what})> _tappables(WidgetTester tester) {
       });
       if (inButton) continue;
     }
+    if (boardPiece != null) {
+      var piece = boardPiece(w);
+      if (!piece) {
+        e.visitAncestorElements((a) {
+          piece = boardPiece(a.widget);
+          return !piece;
+        });
+      }
+      if (!piece) {
+        // 駒を包んでいる側(札 1 枚を包む GestureDetector など)も駒とみなす。
+        void down(Element c, int left) {
+          if (piece || left == 0) return;
+          if (boardPiece(c.widget)) {
+            piece = true;
+            return;
+          }
+          c.visitChildElements((g) => down(g, left - 1));
+        }
+
+        // GestureDetector は内側に 3 段(RawGestureDetector・Semantics・Listener)を挟むので、
+        // 札を Stack で 1 段包んだ山札まで届くよう 6 段みる。
+        e.visitChildElements((c) => down(c, 6));
+      }
+      if (piece) continue;
+    }
     final box = e.renderObject;
     if (box is! RenderBox || !box.attached || !box.hasSize) continue;
     final rect = box.localToGlobal(Offset.zero) & box.size;
     if (rect.isEmpty || !screen.overlaps(rect)) continue;
+    // InkWell は内側に同じ大きさの GestureDetector を持つ。同じ箱を 2 回数えると、9 個並んだ
+    // ボタンが「16 個以上の格子」に見えて検査を素通りする。
+    if (!seen.add(rect)) continue;
     found.add((rect: rect, what: _describe(e)));
   }
   return found;
@@ -208,14 +241,26 @@ List<({Rect rect, String what})> _tappables(WidgetTester tester) {
 ///
 /// ホームの操作要素を上から順に押し、開いた画面を測って戻る、を繰り返す。常時動く画面
 /// (リアルタイム系のプレイ画面)でも止まらないよう、落ち着くのを待たず一定時間だけ進める。
+///
+/// [depth] を 2 にすると、開いた画面の操作要素もそれぞれ押して、その先(対戦設定の先の
+/// プレイ画面、統計の先の確認表示、一覧の先の詳細など)まで測る。毎回ホームから辿り直す。
 Future<void> expectTapTargetsOneLevelDeep(WidgetTester tester,
-    {double min = 44}) async {
+    {double min = 44,
+    int depth = 1,
+    bool Function(Widget widget)? boardPiece}) async {
   final nav = tester.state<NavigatorState>(find.byType(Navigator).first);
+  // 盤のマス(同じ大きさが 16 個以上)は、押して回る対象からも外す。
   List<({Rect rect, String what})> entries() {
+    final all = _tappables(tester);
+    final bySize = <String, int>{};
+    String key(Rect r) => '${r.width.round()}x${r.height.round()}';
+    for (final t in all) {
+      bySize[key(t.rect)] = (bySize[key(t.rect)] ?? 0) + 1;
+    }
     final seen = <String>{};
     return [
-      for (final t in _tappables(tester))
-        if (seen.add('${t.rect}')) t
+      for (final t in all)
+        if ((bySize[key(t.rect)] ?? 0) < 16 && seen.add('${t.rect}')) t
     ]..sort((a, b) => a.rect.top != b.rect.top
         ? a.rect.top.compareTo(b.rect.top)
         : a.rect.left.compareTo(b.rect.left));
@@ -226,31 +271,60 @@ Future<void> expectTapTargetsOneLevelDeep(WidgetTester tester,
     await tester.pump(const Duration(milliseconds: 600));
   }
 
-  final problems = <String>[];
-  final count = entries().length;
-  for (var i = 0; i < count; i++) {
-    final list = entries();
-    if (i >= list.length) break;
-    final entry = list[i];
-    await tester.tapAt(entry.rect.center);
-    await advance();
-    expect(tester.takeException(), isNull, reason: '${entry.what} を開いて例外');
-    for (final s in smallTapTargets(tester, min: min)) {
-      problems.add('${entry.what} → $s');
-    }
+  Future<void> home() async {
     while (nav.canPop()) {
       nav.pop();
       await advance();
     }
   }
-  expect(problems.toSet().toList()..sort(), isEmpty,
-      reason: '当たり判定が $min px 未満の操作要素(§9)。「開いた入口 → 要素: 幅×高さ @位置」:\n  '
-          '${(problems.toSet().toList()..sort()).join('\n  ')}');
+
+  final problems = <String>{};
+  void measure(String path) {
+    expect(tester.takeException(), isNull, reason: '$path を開いて例外');
+    for (final s in smallTapTargets(tester, min: min, boardPiece: boardPiece)) {
+      problems.add('$path → $s');
+    }
+  }
+
+  final count = entries().length;
+  for (var i = 0; i < count; i++) {
+    var list = entries();
+    if (i >= list.length) break;
+    final first = list[i];
+    await tester.tapAt(first.rect.center);
+    await advance();
+    measure(first.what);
+    if (depth >= 2 && nav.canPop()) {
+      final inner = entries().length;
+      for (var j = 0; j < inner; j++) {
+        // 毎回ホームから辿り直す(2 操作目で画面が変わっていても同じ出発点にする)。
+        await home();
+        list = entries();
+        if (i >= list.length) break;
+        await tester.tapAt(list[i].rect.center);
+        await advance();
+        final second = entries();
+        if (j >= second.length) break;
+        await tester.tapAt(second[j].rect.center);
+        await advance();
+        measure('${first.what} → ${second[j].what}');
+      }
+    }
+    await home();
+  }
+  // 画面を外し、開いた画面が残した待ち(生成の時間切れなど)を流し切る。
+  await tester.pumpWidget(const SizedBox());
+  await tester.pump(const Duration(seconds: 20));
+  final sorted = problems.toList()..sort();
+  expect(sorted, isEmpty,
+      reason: '当たり判定が $min px 未満の操作要素(§9)。「辿った入口 → 要素: 幅×高さ @位置」:\n  '
+          '${sorted.join('\n  ')}');
 }
 
 /// 操作要素の当たり判定がすべて [min] px 以上であること。
-void expectTapTargets(WidgetTester tester, {double min = 44}) {
-  final small = smallTapTargets(tester, min: min);
+void expectTapTargets(WidgetTester tester,
+    {double min = 44, bool Function(Widget widget)? boardPiece}) {
+  final small = smallTapTargets(tester, min: min, boardPiece: boardPiece);
   expect(small, isEmpty,
       reason: '当たり判定が $min px 未満の操作要素(§9)。見た目は変えず、余白か最小寸法で'
           '反応する範囲を広げる:\n  ${small.join('\n  ')}');

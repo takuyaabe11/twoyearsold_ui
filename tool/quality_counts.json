@@ -1,9 +1,14 @@
 {
+  "2048": {},
+  "AirHockey": {},
+  "FreeThrow": {},
+  "Gobblet": {},
+  "Minesweeper": {},
+  "NumberPlace": {},
   "PK": {
     "shadows": 1,
     "raw_colors": 1
   },
-  "Solitaire": {
-    "shadows": 2
-  }
+  "Reversi": {},
+  "Solitaire": {}
 }
