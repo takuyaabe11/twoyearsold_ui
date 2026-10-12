@@ -1,29 +1,6 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:twoyearsold_ui/testing.dart';
 import 'package:twoyearsold_ui/twoyearsold_ui.dart';
-
-/// 呼ばれた操作を順に記録するだけの偽プレイヤー。
-class _FakePlayer implements AudioPlayer {
-  _FakePlayer(this.id, this.log, {this.broken = false});
-  final String id;
-  final List<String> log;
-  final bool broken;
-
-  @override
-  dynamic noSuchMethod(Invocation i) {
-    final name = i.memberName.toString().split('"')[1];
-    if (broken && name == 'setSource') throw StateError('no such asset');
-    final arg = i.positionalArguments.isEmpty ? '' : i.positionalArguments.first;
-    final shown = switch (arg) {
-      AssetSource a => a.path,
-      Duration d => '${d.inMilliseconds}ms',
-      Enum e => e.name,
-      _ => '$arg',
-    };
-    log.add('$id.$name($shown)');
-    return Future<void>.value();
-  }
-}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +9,7 @@ void main() {
   late SoundBank bank;
   setUp(() {
     log = [];
-    bank = SoundBank(playerFactory: (id) => _FakePlayer(id, log));
+    bank = recordingSoundBank(log);
   });
 
   test('a one-shot sound is preloaded in low-latency mode', () async {
@@ -81,8 +58,7 @@ void main() {
   });
 
   test('a sound that failed to load is skipped without throwing', () async {
-    final b = SoundBank(
-        playerFactory: (id) => _FakePlayer(id, log, broken: id == 'bad'));
+    final b = recordingSoundBank(log, missing: {'bad'});
     await b.load('bad', 'sounds/missing.wav');
     await b.load('ok', 'sounds/place.wav');
     expect(b.has('bad'), isFalse);
