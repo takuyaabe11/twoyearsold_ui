@@ -21,6 +21,8 @@ import re
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import sync_web_shell as sws  # noqa: E402  Web の殻の生成ロジック(一致検査に使う)
 ROOT = os.path.dirname(os.path.dirname(HERE))  # twoyearsold/
 BASELINE = os.path.join(HERE, 'quality_baseline.json')
 
@@ -121,6 +123,11 @@ def offline(game):
             and 'pwa_postbuild.sh' in _read(os.path.join(d, 'vercel_build.sh')))
 
 
+def web_shell(game):
+    """Web の殻: game.json を持ち、共有の雛形(web_shell/)から生成した内容と一致する。"""
+    return game in sws.games() and not sws.stale(game)
+
+
 def readme(game):
     """README: Flutter の雛形のままでない。"""
     return 'starting point for a Flutter application' not in _read(
@@ -138,6 +145,7 @@ CHECKS = [
     ('web_meta', 'Web の体裁(OG)', web_meta),
     ('web_splash', 'Web の起動画面', web_splash),
     ('offline', 'オフライン', offline),
+    ('web_shell', 'Web の殻が共有と一致', web_shell),
     ('readme', 'README', readme),
 ]
 

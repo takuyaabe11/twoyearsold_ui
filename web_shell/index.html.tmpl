@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- 生成物。twoyearsold_ui/web_shell/index.html.tmpl と game.json から
+       twoyearsold_ui/tool/sync_web_shell.py が作る。直接編集しない。 -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <!-- ピンチズームを許可(WCAG 1.4.4)。maximum-scale/user-scalable=no は付けない。 -->
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="{{description}}">
+  <meta name="theme-color" content="#0A0A0B">
+
+  <!-- Open Graph / Twitter(リンクが綺麗に展開されるように) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="TWOYEARSOLD">
+  <meta property="og:title" content="{{title}}">
+  <meta property="og:description" content="{{description}}">
+  <meta property="og:url" content="{{url}}">
+  <meta property="og:image" content="{{url}}/icons/Icon-512.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="{{title}}">
+  <meta name="twitter:description" content="{{description}}">
+  <meta name="twitter:image" content="{{url}}/icons/Icon-512.png">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="{{title}}">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>{{title}}</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    /* 起動までの白フラッシュを防ぎ、編集的な静かなローディングを出す。 */
+    html, body { margin: 0; padding: 0; background: #0A0A0B; }
+    #loading {
+      position: fixed; inset: 0; z-index: 1;
+      display: flex; align-items: center; justify-content: center;
+      background: #0A0A0B;
+    }
+    #loading .wordmark {
+      color: #F4F4F2;
+      font-family: Helvetica, Arial, sans-serif;
+      font-weight: 700; font-size: 44px; letter-spacing: -2px; line-height: 0.98;
+      opacity: 0; animation: tf-fade 900ms ease-out 200ms forwards;
+    }
+    @keyframes tf-fade { to { opacity: 0.92; } }
+    @media (prefers-reduced-motion: reduce) {
+      #loading .wordmark { animation: none; opacity: 0.92; }
+    }
+  </style>
+</head>
+<body>
+  <div id="loading"><div class="wordmark">{{wordmark}}</div></div>
+  <script>
+    // 最初のフレームが描かれたらローディングを除去(Flutter 公式イベント)。
+    window.addEventListener('flutter-first-frame', function () {
+      var el = document.getElementById('loading');
+      if (el) el.remove();
+    });
+  </script>
+  <script src="flutter_bootstrap.js" async></script>
+
+  <!-- オフライン対応(自前の SW: 一式を先取り + network-first)。Flutter 同梱 SW は撤去済み。 -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('app_sw.js').catch(function (e) {
+          console.warn('Service worker registration failed:', e);
+        });
+      });
+      // 初回訪問では SW が握る前に読み終えた資産(端末ごとに違う描画エンジン、既定フォント等)が
+      // ある。実際に読んだものを SW へ渡して控えさせる(どれを控えるかは SW が決める)。
+      // SW が入れ替わったときも渡し直す。
+      var painted = false;
+      var reportLoaded = function () {
+        var sw = navigator.serviceWorker.controller;
+        if (!painted || !sw) return;
+        var urls = performance.getEntriesByType('resource')
+          .map(function (e) { return e.name; });
+        sw.postMessage({ type: 'loaded', urls: urls });
+      };
+      window.addEventListener('flutter-first-frame', function () {
+        painted = true;
+        reportLoaded();
+      });
+      navigator.serviceWorker.addEventListener('controllerchange', reportLoaded);
+    }
+  </script>
+</body>
+</html>

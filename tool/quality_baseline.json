@@ -5,8 +5,6 @@
     "keyboard",
     "shared_sound",
     "golden",
-    "web_meta",
-    "web_splash",
     "readme"
   ],
   "FreeThrow": [
@@ -16,32 +14,24 @@
     "keyboard",
     "shared_sound",
     "shared_game_over",
-    "golden",
-    "web_meta",
-    "web_splash"
+    "golden"
   ],
   "Gobblet": [
     "semantics",
     "text_scale",
     "keyboard",
-    "golden",
-    "web_meta",
-    "web_splash"
+    "golden"
   ],
   "Minesweeper": [
     "semantics",
     "text_scale",
     "keyboard",
-    "golden",
-    "web_meta",
-    "web_splash"
+    "golden"
   ],
   "NumberPlace": [
     "text_scale",
     "keyboard",
     "golden",
-    "web_meta",
-    "web_splash",
     "readme"
   ],
   "PK": [
@@ -50,21 +40,16 @@
     "text_scale",
     "keyboard",
     "shared_sound",
-    "golden",
-    "web_meta",
-    "web_splash"
+    "golden"
   ],
   "Reversi": [
     "text_scale",
     "keyboard",
     "shared_game_over",
-    "golden",
-    "web_meta",
-    "web_splash"
+    "golden"
   ],
   "Solitaire": [
     "golden",
-    "web_splash",
     "readme"
   ]
 }
