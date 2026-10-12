@@ -18,6 +18,7 @@
 使い方:
   python3 tool/build_cjk_fonts.py            # 全ゲーム再生成
   python3 tool/build_cjk_fonts.py Reversi    # 指定ゲームのみ
+  python3 tool/build_cjk_fonts.py --check    # 同梱フォントが今の文言を収録しているか検査(通信なし)
 
 文言を増やしたら本ツールを再実行する(= フォントは常に文言と同期)。— DESIGN.md §2.1。
 """
@@ -75,7 +76,7 @@ GAMES = {
     'PK':          {'dart': ['lib/l10n/pk_l10n.dart'], 'shared': True},
     'Minesweeper': {'dart': ['lib/l10n/ms_l10n.dart'], 'shared': True},
     'Solitaire':   {'dart': ['lib/l10n/sol_l10n.dart'], 'shared': True},
-    'NumberPlace': {'arb': 'lib/l10n', 'shared': False},
+    'NumberPlace': {'arb': 'lib/l10n', 'shared': True},
 }
 
 
@@ -179,8 +180,9 @@ def build_subset(gf_family, chars):
     return f, len(wanted)
 
 
-def build_game(game, cfg):
-    print(f'\n=== {game} ===')
+def wanted_by_family(game, cfg):
+    """このゲームが描く文字を、焼き先のフォントファミリ別に集める。
+    {asset_family: [gf_family, set(chars)]} を返す(生成と検査の単一の出所)。"""
     src_dir = os.path.join(ROOT, game)
     per_locale = {}
     if cfg.get('shared'):
@@ -193,8 +195,6 @@ def build_game(game, cfg):
     # コードリテラル記号(★☆)を NotoSansJP(全ロケールの fallback に常在)へ同梱。
     per_locale.setdefault('ja', set()).update(SYMBOLS_ALWAYS)
 
-    fonts_dir = os.path.join(src_dir, 'assets/fonts')
-    os.makedirs(fonts_dir, exist_ok=True)
     # 同じ出力ファミリ(asset_family)に複数ロケールが割り当たる場合(例: ar と fa は
     # どちらも NotoSansArabic)、文字集合を union してから1ファイルに焼く。
     by_family = {}
@@ -204,6 +204,43 @@ def build_game(game, cfg):
             continue
         entry = by_family.setdefault(asset_family, [gf_family, set()])
         entry[1] |= chars
+    return by_family
+
+
+def _cmap(path):
+    cov = set()
+    for t in TTFont(path)['cmap'].tables:
+        cov |= set(t.cmap.keys())
+    return cov
+
+
+def check_game(game, cfg):
+    """同梱フォントが今の文言を収録しているか検査する(通信なし)。
+    欠けた字は実行時に CDN の代替フォントへ落ち、オフラインでは豆腐になる。
+    {asset_family: [欠けた字]} を返す(空 = 問題なし)。"""
+    fonts_dir = os.path.join(ROOT, game, 'assets/fonts')
+    # ラテン・記号は先頭の Arimo が受ける。そこに在る字は地域フォントに無くてよい。
+    latin = set()
+    for base in ('Arimo.ttf',):
+        path = os.path.join(fonts_dir, base)
+        if os.path.exists(path):
+            latin |= _cmap(path)
+    missing = {}
+    for asset_family, (_, chars) in wanted_by_family(game, cfg).items():
+        path = os.path.join(fonts_dir, f'{asset_family}.ttf')
+        cov = (_cmap(path) if os.path.exists(path) else set()) | latin
+        miss = sorted(c for c in chars
+                      if ord(c) > 0x7F and c not in '\n\r\t' and ord(c) not in cov)
+        if miss:
+            missing[asset_family] = miss
+    return missing
+
+
+def build_game(game, cfg):
+    print(f'\n=== {game} ===')
+    fonts_dir = os.path.join(ROOT, game, 'assets/fonts')
+    os.makedirs(fonts_dir, exist_ok=True)
+    by_family = wanted_by_family(game, cfg)
     built = []
     for asset_family, (gf_family, chars) in by_family.items():
         f, n = build_subset(gf_family, chars)
@@ -225,7 +262,18 @@ def build_game(game, cfg):
 
 
 def main():
-    targets = sys.argv[1:] or list(GAMES)
+    args = [a for a in sys.argv[1:] if a != '--check']
+    targets = args or list(GAMES)
+    if '--check' in sys.argv[1:]:
+        bad = False
+        for game in targets:
+            missing = check_game(game, GAMES[game])
+            for fam, miss in missing.items():
+                bad = True
+                print(f'✗ {game}: {fam} に {len(miss)} 字が未収録: {"".join(miss[:40])}')
+            if not missing:
+                print(f'✓ {game}: 同梱フォントは文言を収録済み')
+        sys.exit(1 if bad else 0)
     for game in targets:
         build_game(game, GAMES[game])
 
