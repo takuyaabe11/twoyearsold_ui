@@ -1,0 +1,70 @@
+{
+  "AirHockey": [
+    "semantics",
+    "text_scale",
+    "keyboard",
+    "shared_sound",
+    "golden",
+    "web_meta",
+    "web_splash",
+    "readme"
+  ],
+  "FreeThrow": [
+    "semantics",
+    "motion",
+    "text_scale",
+    "keyboard",
+    "shared_sound",
+    "shared_game_over",
+    "golden",
+    "web_meta",
+    "web_splash"
+  ],
+  "Gobblet": [
+    "semantics",
+    "text_scale",
+    "keyboard",
+    "golden",
+    "web_meta",
+    "web_splash"
+  ],
+  "Minesweeper": [
+    "semantics",
+    "text_scale",
+    "keyboard",
+    "golden",
+    "web_meta",
+    "web_splash"
+  ],
+  "NumberPlace": [
+    "text_scale",
+    "keyboard",
+    "golden",
+    "web_meta",
+    "web_splash",
+    "readme"
+  ],
+  "PK": [
+    "semantics",
+    "motion",
+    "text_scale",
+    "keyboard",
+    "shared_sound",
+    "golden",
+    "web_meta",
+    "web_splash"
+  ],
+  "Reversi": [
+    "text_scale",
+    "keyboard",
+    "shared_game_over",
+    "golden",
+    "web_meta",
+    "web_splash"
+  ],
+  "Solitaire": [
+    "golden",
+    "web_splash",
+    "readme"
+  ]
+}

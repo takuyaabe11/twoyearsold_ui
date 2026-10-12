@@ -64,19 +64,19 @@ SCRIPT_FONTS = {
 # 言語に依らず描画できる。— DESIGN.md §2.1 / AppTheme.fallbackForLocale。
 SYMBOLS_ALWAYS = set('★☆')
 
-# 各ゲームの文言ソース。dart=共通形式の _data マップ, arb=NumberPlace 形式。
+# 各ゲームの固有文言ソース(共有文言は常に含む)。dart=共通形式の _data マップ, arb=NumberPlace 形式。
 SHARED_L10N = os.path.join(ROOT, 'twoyearsold_ui/lib/src/l10n.dart')
 GAMES = {
     'Reversi':     {'dart': ['lib/l10n/rv_l10n.dart',
-                             'lib/presentation/learn/learn_screen.dart'], 'shared': True},
-    '2048':        {'dart': ['lib/l10n/tf_l10n.dart'], 'shared': True},
-    'Gobblet':     {'dart': ['lib/l10n/gb_l10n.dart'], 'shared': True},
-    'AirHockey':   {'dart': ['lib/l10n/ah_l10n.dart'], 'shared': True},
-    'FreeThrow':   {'dart': ['lib/l10n/ft_l10n.dart'], 'shared': True},
-    'PK':          {'dart': ['lib/l10n/pk_l10n.dart'], 'shared': True},
-    'Minesweeper': {'dart': ['lib/l10n/ms_l10n.dart'], 'shared': True},
-    'Solitaire':   {'dart': ['lib/l10n/sol_l10n.dart'], 'shared': True},
-    'NumberPlace': {'arb': 'lib/l10n', 'shared': True},
+                             'lib/presentation/learn/learn_screen.dart']},
+    '2048':        {'dart': ['lib/l10n/tf_l10n.dart']},
+    'Gobblet':     {'dart': ['lib/l10n/gb_l10n.dart']},
+    'AirHockey':   {'dart': ['lib/l10n/ah_l10n.dart']},
+    'FreeThrow':   {'dart': ['lib/l10n/ft_l10n.dart']},
+    'PK':          {'dart': ['lib/l10n/pk_l10n.dart']},
+    'Minesweeper': {'dart': ['lib/l10n/ms_l10n.dart']},
+    'Solitaire':   {'dart': ['lib/l10n/sol_l10n.dart']},
+    'NumberPlace': {'arb': 'lib/l10n'},
 }
 
 
@@ -184,9 +184,9 @@ def wanted_by_family(game, cfg):
     """このゲームが描く文字を、焼き先のフォントファミリ別に集める。
     {asset_family: [gf_family, set(chars)]} を返す(生成と検査の単一の出所)。"""
     src_dir = os.path.join(ROOT, game)
-    per_locale = {}
-    if cfg.get('shared'):
-        per_locale = merge(per_locale, collect_dart(SHARED_L10N))
+    # 共有文言は全作が使う。作ごとの申告にすると申告漏れで字が欠ける(NumberPlace で実際に
+    # 起きた)ので、常に含める。
+    per_locale = collect_dart(SHARED_L10N)
     for rel in cfg.get('dart', []):
         per_locale = merge(per_locale, collect_dart(os.path.join(src_dir, rel)))
     if 'arb' in cfg:

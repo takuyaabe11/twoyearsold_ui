@@ -1,6 +1,7 @@
 #!/bin/sh
 # TWOYEARSOLD の各ゲームリポジトリ用 pre-push フック。
-# push 前に i18n ガード(DESIGN.md §10.6 ローカライズ・ゲート)を実行し、違反があれば push を止める。
+# push 前に i18n ガード(DESIGN.md §10.6 ローカライズ・ゲート)と品質ガード(横断の穴の後戻り防止)を
+# 実行し、違反があれば push を止める。
 #
 # インストール(各ゲームのローカル作業ツリーで一度だけ):
 #   cp ../twoyearsold_ui/tool/git_pre_push_hook.sh .git/hooks/pre-push
@@ -21,4 +22,15 @@ if ! python3 "$GUARD" "$APP"; then
   echo "  直書きは L10n 化するか行末に // i18n-ok。未訳/空値は全ロケール埋める。"
   echo "  文言変更後は build_cjk_fonts.py でフォント再生成。"
   exit 1
+fi
+
+QGUARD="../twoyearsold_ui/tool/quality_guard.py"
+if [ -f "$QGUARD" ]; then
+  echo "▶ 品質ガード(横断の穴の後戻り防止)を実行: $APP"
+  if ! python3 "$QGUARD" "$APP"; then
+    echo ""
+    echo "✗ 品質ガード違反のため push を中止しました。"
+    echo "  新しい穴は塞ぐ。塞いだ穴は quality_guard.py --tighten で baseline から消す。"
+    exit 1
+  fi
 fi

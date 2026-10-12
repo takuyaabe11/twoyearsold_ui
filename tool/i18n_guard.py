@@ -120,30 +120,9 @@ def check_completeness(game, cfg):
 
 # ---- 検査2: フォント被覆 ----
 def check_fonts(game, cfg):
-    fails = []
-    per_locale = {}
-    if cfg.get('shared'):
-        per_locale = bf.merge(per_locale, bf.collect_dart(SHARED_L10N))
-    for rel in cfg.get('dart', []):
-        per_locale = bf.merge(per_locale, bf.collect_dart(os.path.join(ROOT, game, rel)))
-    if 'arb' in cfg:
-        per_locale = bf.merge(per_locale, bf.collect_arb(os.path.join(ROOT, game, cfg['arb'])))
-    fonts_dir = os.path.join(ROOT, game, 'assets/fonts')
-    by_family = {}
-    for loc, (gf, asset) in SCRIPT_FONTS.items():
-        ch = {c for c in per_locale.get(loc, set()) if ord(c) > 0x7F and c not in '\n\r\t'}
-        by_family.setdefault(asset, set()).update(ch)
-    for asset, chars in by_family.items():
-        if not chars: continue
-        fp = os.path.join(fonts_dir, asset + '.ttf')
-        if not os.path.exists(fp):
-            fails.append(f'フォント {asset}.ttf が無い({len(chars)}字必要) → build_cjk_fonts.py 実行')
-            continue
-        cm = set(TTFont(fp).getBestCmap().keys())
-        miss = sorted(c for c in chars if ord(c) not in cm)
-        if miss:
-            fails.append(f'{asset}: 未収録 {"".join(miss[:20])} ({len(miss)}字) → build_cjk_fonts.py 実行')
-    return fails
+    # 文字集合の収集と収録判定は build_cjk_fonts と共用(生成と検査がずれないように)。
+    return [f'{asset}: 未収録 {"".join(miss[:20])} ({len(miss)}字) → build_cjk_fonts.py 実行'
+            for asset, miss in bf.check_game(game, cfg).items()]
 
 # ---- 検査3: 直書き(L10n非経由の疑い) ----
 SCAN_PATTERNS = [
