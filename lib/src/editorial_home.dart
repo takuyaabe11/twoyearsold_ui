@@ -71,7 +71,16 @@ class EditorialHome extends StatelessWidget {
               SizedBox(height: gapAfterWordmark),
               body,
               SizedBox(height: gapBeforeFooter),
-              Row(mainAxisSize: MainAxisSize.min, children: footerRow),
+              // リンクは当たり判定用の横余白を持つ。そのぶん寄せて、先頭の文字を左端(右から左の
+              // 言語では右端)の余白に揃える。
+              Transform.translate(
+                offset: Offset(
+                    Directionality.of(context) == TextDirection.rtl
+                        ? FooterLink.hitPad
+                        : -FooterLink.hitPad,
+                    0),
+                child: Row(mainAxisSize: MainAxisSize.min, children: footerRow),
+              ),
             ],
           ),
         ),

@@ -1,8 +1,9 @@
 {
   "PK": [
-    "semantics",
-    "text_scale",
+    "golden",
     "keyboard",
-    "golden"
+    "semantics",
+    "tap_targets",
+    "text_scale"
   ]
 }

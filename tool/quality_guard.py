@@ -108,6 +108,14 @@ def golden(game):
     return any(rx.search(src) for _, src in _dart(game, 'test'))
 
 
+def tap_targets(game):
+    """タップ領域: 操作要素の当たり判定が 44px 以上であることをテストで測っている(§9)。
+    共有ハーネスの expectTapTargets(ホーム・プレイ・終了)と expectTapTargetsOneLevelDeep
+    (ホームから 1 操作で開く画面の巡回)。"""
+    src = '\n'.join(t for _, t in _dart(game, 'test'))
+    return 'expectTapTargets(' in src and 'expectTapTargetsOneLevelDeep(' in src
+
+
 def web_meta(game):
     """Web の体裁: リンク展開(OG)と theme-color がある。"""
     html = _read(os.path.join(ROOT, game, 'web/index.html'))
@@ -148,6 +156,7 @@ CHECKS = [
     ('shared_sound', '共有の音の基盤', shared_sound),
     ('shared_game_over', '共有の終了画面', shared_game_over),
     ('golden', 'ゴールデン', golden),
+    ('tap_targets', 'タップ領域の計測', tap_targets),
     ('web_meta', 'Web の体裁(OG)', web_meta),
     ('web_splash', 'Web の起動画面', web_splash),
     ('offline', 'オフライン', offline),

@@ -6,8 +6,14 @@ import 'app_theme.dart';
 ///
 /// `Statistics · Achievements · Settings` のように中黒で並べる 13px/textMuted。
 /// 各作で `_FooterLink` を個別実装してドリフトする(§9 のタップ領域を入れ忘れる等)
-/// のを防ぐ単一の出所。**44px のタップ領域を内蔵**(13px の文字に縦余白)。
+/// のを防ぐ単一の出所。**44px のタップ領域を内蔵**(13px の文字に縦と横の余白)。
+///
+/// 横の余白 [hitPad] は見た目の間隔を兼ねる([FooterDot] は余白を持たない)。先頭のリンクは
+/// 余白のぶん右へずれるので、並べる側が [hitPad] だけ左へ寄せて文字の左端を揃える。
 class FooterLink extends StatelessWidget {
+  /// 文字の左右に取る当たり判定の余白。2 文字のラベル(約 27px)でも幅 44px を超える。
+  static const double hitPad = 9;
+
   final String label;
   final AppTheme theme;
   final VoidCallback onTap;
@@ -18,7 +24,8 @@ class FooterLink extends StatelessWidget {
         behavior: HitTestBehavior.opaque,
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 14), // §9: 最低44px。
+          // §9: 最低 44px。縦だけでなく横も(短いラベルは文字幅だけでは 44px に届かない)。
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: hitPad),
           child: Text(
             label,
             style: TextStyle(
@@ -37,8 +44,7 @@ class FooterDot extends StatelessWidget {
   const FooterDot(this.theme, {super.key});
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Text('·', style: TextStyle(color: theme.textMuted)),
-      );
+  Widget build(BuildContext context) =>
+      // 左右の間隔は隣の FooterLink の余白が担う(当たり判定を間隔いっぱいまで広げるため)。
+      Text('·', style: TextStyle(color: theme.textMuted));
 }

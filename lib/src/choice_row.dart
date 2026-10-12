@@ -8,7 +8,15 @@ import 'app_theme.dart';
 /// 選択 = textPrimary・w700 / 非選択 = textMuted・w400 / 無効 = muted@0.4。
 /// 各作が個別に同等実装(_Choice 等)してドリフトする(サイズ18・朱下線 等)のを防ぐ
 /// 単一の出所。サイズは §6 の選択肢=22。
+///
+/// 各選択肢は文字の周りに当たり判定の余白を持つ(§9: 44px 以上。文字だけでは高さ約 31px、
+/// 短いラベルは幅も足りない)。横の余白は選択肢どうしの間隔の一部として数え、全体を余白の
+/// ぶん寄せるので、文字の位置と横の間隔は余白なしのときと同じ。縦は行ごとに少し広くなる。
 class ChoiceRow<T> extends StatelessWidget {
+  /// 文字の左右・上下に取る当たり判定の余白。
+  static const double hitPadX = 6;
+  static const double hitPadY = 7;
+
   final AppTheme theme;
   final T value;
   final List<(T, String)> options;
@@ -35,9 +43,13 @@ class ChoiceRow<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: spacing,
-      runSpacing: runSpacing,
+    final rtl = Directionality.of(context) == TextDirection.rtl;
+    return Transform.translate(
+      // 先頭の選択肢の文字を、余白なしのときと同じ左端(右から左の言語では右端)に揃える。
+      offset: Offset(rtl ? hitPadX : -hitPadX, 0),
+      child: Wrap(
+      spacing: (spacing - hitPadX * 2).clamp(0.0, double.infinity),
+      runSpacing: (runSpacing - hitPadY * 2).clamp(0.0, double.infinity),
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         for (final (v, label) in options)
@@ -50,6 +62,7 @@ class ChoiceRow<T> extends StatelessWidget {
             onTap: () => onChanged(v),
           ),
       ],
+      ),
     );
   }
 }
@@ -75,13 +88,17 @@ class _ChoiceItem extends StatelessWidget {
     final color = disabled
         ? theme.textMuted.withValues(alpha: 0.4)
         : (selected ? theme.textPrimary : theme.textMuted);
-    final text = Text(
-      label,
-      style: TextStyle(
-        fontSize: fontSize,
-        fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
-        color: color,
-        letterSpacing: 0.2,
+    final text = Padding(
+      padding: const EdgeInsets.symmetric(
+          horizontal: ChoiceRow.hitPadX, vertical: ChoiceRow.hitPadY),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: fontSize,
+          fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
+          color: color,
+          letterSpacing: 0.2,
+        ),
       ),
     );
     if (disabled) return text;
