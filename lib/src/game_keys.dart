@@ -24,6 +24,7 @@ class GameKeys extends StatefulWidget {
     this.onDigit,
     this.onDelete,
     this.onAnyKey,
+    this.extra = const {},
     this.wasd = true,
   });
 
@@ -48,6 +49,10 @@ class GameKeys extends StatefulWidget {
 
   /// どのキーでも最初に呼ぶ(Web の効果音の解錠など)。
   final VoidCallback? onAnyKey;
+
+  /// その作だけのキー(例: Minesweeper の F = 旗、数独の M = メモ)。共通語彙より先に見る。
+  /// 押しっぱなしでは繰り返さない。
+  final Map<LogicalKeyboardKey, VoidCallback> extra;
 
   /// WASD を矢印として扱うか。文字キーを別の意味で使う作は false。
   final bool wasd;
@@ -122,6 +127,12 @@ class _GameKeysState extends State<GameKeys> {
     }
     widget.onAnyKey?.call();
     final k = event.logicalKey;
+
+    final own = widget.extra[k];
+    if (own != null) {
+      if (down) own();
+      return KeyEventResult.handled;
+    }
 
     final dir = _arrows[k] ?? (widget.wasd ? _wasd[k] : null);
     if (dir != null) {

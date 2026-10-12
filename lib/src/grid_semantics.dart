@@ -15,13 +15,15 @@ class GridSemantics extends StatelessWidget {
     this.onTap,
     this.onLongPress,
     this.isButton,
+    this.isSelected,
     this.cellRect,
   });
 
   final int cols;
   final int rows;
 
-  /// マス [index](行優先、左上が 0)の読み上げ文。例: 「c4、黒」「3 行 5 列、旗」。
+  /// マス [index] の読み上げ文。等分の格子では行優先で左上が 0。[cellRect] を渡す盤では、
+  /// index と位置の対応は呼び出し側が決める。例: 「c4、黒」「3 行 5 列、旗」。
   final String Function(int index) label;
 
   /// 読み上げの操作(ダブルタップ)。null なら操作なしのラベルだけ。
@@ -32,6 +34,9 @@ class GridSemantics extends StatelessWidget {
 
   /// そのマスがいま操作できるか(ボタンとして読み上げる)。null なら [onTap] があれば全マス。
   final bool Function(int index)? isButton;
+
+  /// そのマスが選択中か(選択中のマス・キーボードカーソルの位置を「選択済み」と読ませる)。
+  final bool Function(int index)? isSelected;
 
   /// マスの位置(盤の大きさ [size] の中での矩形)。null なら等分の格子。
   /// 透視のかかった盤は、投影したマスを囲む矩形を返す。
@@ -59,8 +64,12 @@ class GridSemantics extends StatelessWidget {
                       rect: cellRect?.call(i, size) ??
                           Rect.fromLTWH((i % cols) * w, (i ~/ cols) * h, w, h),
                       child: Semantics(
+                        // マスごとに独立したノードにする。無いと、操作を持たないマスの
+                        // ラベルが親の 1 ノードへ連結されて、盤全体が 1 つの長い文になる。
+                        container: true,
                         label: label(i),
                         button: isButton?.call(i) ?? onTap != null,
+                        selected: isSelected?.call(i),
                         onTap: onTap == null ? null : () => onTap!(i),
                         onLongPress:
                             onLongPress == null ? null : () => onLongPress!(i),

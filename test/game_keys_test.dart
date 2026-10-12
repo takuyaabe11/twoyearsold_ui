@@ -91,4 +91,22 @@ void main() {
     c.hide();
     expect(c.index, isNull);
   });
+
+  testWidgets('a game can add its own keys, which win over the shared ones',
+      (tester) async {
+    final log = <String>[];
+    await tester.pumpWidget(MaterialApp(
+      home: GameKeys(
+        onHint: () => log.add('hint'),
+        extra: {
+          LogicalKeyboardKey.keyF: () => log.add('flag'),
+          LogicalKeyboardKey.keyH: () => log.add('own-h'),
+        },
+        child: const SizedBox.expand(),
+      ),
+    ));
+    await tester.sendKeyEvent(LogicalKeyboardKey.keyF);
+    await tester.sendKeyEvent(LogicalKeyboardKey.keyH);
+    expect(log, ['flag', 'own-h']);
+  });
 }
