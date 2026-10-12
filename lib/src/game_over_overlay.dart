@@ -15,6 +15,9 @@ import 'primary_action.dart';
 /// [secondaryLabel]/[onSecondary] は任意の副テキストアクション(例: 勝利時の New Game)。
 /// [homeLabel]/[onHome] は Home。[detail] にスコアやレビューを差し込める。
 class GameOverOverlay extends StatelessWidget {
+  /// スクリムの不透明度(全作共通)。
+  static const double scrimOpacity = 0.82;
+
   final AppTheme theme;
   final String title;
   final bool accent;
@@ -60,8 +63,9 @@ class GameOverOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // 薄いスクリム(盤が透けて残る)。§10.1「薄い」。
-      color: theme.background.withValues(alpha: 0.5),
+      // スクリム(§10.1)。盤はうっすら残しつつ、上に載る文字が読める濃さにする。
+      // 0.5 では、石や数字で埋まった盤の上で見出し・内訳・操作が読めなかった。
+      color: theme.background.withValues(alpha: scrimOpacity),
       alignment: Alignment.center,
       child: Column(
         mainAxisSize: MainAxisSize.min,
