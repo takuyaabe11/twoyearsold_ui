@@ -29,6 +29,7 @@ export 'src/primary_action.dart';
 export 'src/rules_page.dart';
 export 'src/section_label.dart';
 export 'src/safe_change_notifier.dart';
+export 'src/sound_bank.dart';
 export 'src/sound_service.dart';
 export 'src/star_picker.dart';
 export 'src/stat_tile.dart';

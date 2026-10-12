@@ -33,7 +33,10 @@ class SoundService {
   /// 同梱する音だけを読み込む(未同梱は静かにスキップ)。null=全7音。
   final Set<Sfx>? only;
 
-  SoundService({this.only});
+  /// 低遅延モードで読み込む(打撃・キックなど、操作と音のずれが目立つ作向け)。
+  final bool lowLatency;
+
+  SoundService({this.only, this.lowLatency = false});
 
   final Map<Sfx, AudioPlayer> _players = {};
   bool _ready = false;
@@ -56,6 +59,11 @@ class SoundService {
       if (only != null && !only!.contains(entry.key)) continue;
       try {
         final p = AudioPlayer(playerId: 'sfx_${entry.key.name}');
+        if (lowLatency) {
+          try {
+            await p.setPlayerMode(PlayerMode.lowLatency);
+          } catch (_) {}
+        }
         await p.setReleaseMode(ReleaseMode.stop);
         await p.setSource(AssetSource(entry.value));
         _players[entry.key] = p;
