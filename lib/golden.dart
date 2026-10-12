@@ -96,6 +96,8 @@ Future<void> pumpGolden(
   tester.platformDispatcher.textScaleFactorTestValue = textScale;
   tester.platformDispatcher.accessibilityFeaturesTestValue =
       const FakeAccessibilityFeatures(disableAnimations: true);
+  BrandFooter.debugYear = 2026; // フッターの年を固定(年越しで画像が変わらないように)。
+  addTearDown(() => BrandFooter.debugYear = null);
   addTearDown(tester.view.reset);
   addTearDown(tester.platformDispatcher.clearAllTestValues);
 

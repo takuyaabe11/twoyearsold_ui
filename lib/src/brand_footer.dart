@@ -7,6 +7,10 @@ class BrandFooter extends StatelessWidget {
   final AppTheme theme;
   const BrandFooter({super.key, required this.theme});
 
+  /// 表記の年を固定する(テスト用)。ゴールデンが年越しで一斉に落ちないようにする。
+  @visibleForTesting
+  static int? debugYear;
+
   @override
   Widget build(BuildContext context) {
     // MaterialApp.builder の Column 直下(Navigator の兄弟)に置かれるため、
@@ -22,8 +26,11 @@ class BrandFooter extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 3),
             child: Text(
-              '© ${DateTime.now().year} TWOYEARSOLD',
+              '© ${debugYear ?? DateTime.now().year} TWOYEARSOLD',
               textAlign: TextAlign.center,
+              // ブランド表記はラテン文字の固定句。右から左の言語でも語順を入れ替えない
+              // (入れ替わると「TWOYEARSOLD 2026 ©」になる)。
+              textDirection: TextDirection.ltr,
               style: TextStyle(
                 fontSize: 9,
                 letterSpacing: 1.6,
