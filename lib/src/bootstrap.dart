@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'providers.dart';
+import 'licenses.dart';
 
 /// 全アプリ共通の起動シーケンス(DESIGN.md §2.1 / §9)。各 `main()` はこれを呼ぶだけ。
 ///
@@ -17,10 +18,12 @@ Future<void> bootstrap(
   List<String> fonts = const ['Arimo', 'NotoSansJP'],
 }) async {
   WidgetsFlutterBinding.ensureInitialized();
+  registerFontLicenses(); // 同梱フォントのライセンス(表示は LicensesScreen)。
   for (final f in fonts) {
     try {
-      await (FontLoader(f)..addFont(rootBundle.load('assets/fonts/$f.ttf')))
-          .load();
+      await (FontLoader(
+        f,
+      )..addFont(rootBundle.load('assets/fonts/$f.ttf'))).load();
     } catch (_) {
       // 先読み失敗は致命ではない。
     }

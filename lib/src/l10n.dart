@@ -96,6 +96,7 @@ class L10n {
   String get animations => _get('animations');
   String get haptics => _get('haptics');
   String get language => _get('language');
+  String get licenses => _get('licenses');
   String get languageSystem => _get('languageSystem');
   String get newGame => _get('newGame');
   String get howToPlay => _get('howToPlay');
@@ -127,6 +128,7 @@ class L10n {
 
   static const Map<String, Map<String, String>> _data = {
     'en': {
+      'licenses': 'Licenses',
       'settings': 'Settings', 'game': 'Game', 'theme': 'Theme', 'sound': 'Sound',
       'animations': 'Animations', 'haptics': 'Haptics', 'language': 'Language', 'languageSystem': 'System',
       'newGame': 'New Game', 'howToPlay': 'How to Play', 'statistics': 'Statistics',
@@ -141,6 +143,7 @@ class L10n {
       'themeCool': 'Cool', 'themeDarkInk': 'Dark Ink',
     },
     'ja': {
+      'licenses': 'ライセンス',
       'settings': '設定', 'game': 'ゲーム', 'theme': 'テーマ', 'sound': '効果音',
       'animations': 'アニメーション', 'haptics': '触覚', 'language': '言語', 'languageSystem': '端末に従う',
       'newGame': '新しいゲーム', 'howToPlay': '遊び方', 'statistics': '統計',
@@ -155,6 +158,7 @@ class L10n {
       'themeCool': 'クール', 'themeDarkInk': 'ダークインク',
     },
     'zh': {
+      'licenses': '许可',
       'settings': '设置',
       'game': '游戏',
       'theme': '主题',
@@ -191,6 +195,7 @@ class L10n {
       'themeDarkInk': '墨黑',
     },
     'zh_Hant': {
+      'licenses': '授權',
       'settings': '設定',
       'game': '遊戲',
       'theme': '主題',
@@ -227,6 +232,7 @@ class L10n {
       'themeDarkInk': '深墨',
     },
     'ko': {
+      'licenses': '라이선스',
       'settings': '설정',
       'game': '게임',
       'theme': '테마',
@@ -263,6 +269,7 @@ class L10n {
       'themeDarkInk': '다크 잉크',
     },
     'de': {
+      'licenses': 'Lizenzen',
       'settings': 'Einstellungen',
       'game': 'Spiel',
       'theme': 'Thema',
@@ -299,6 +306,7 @@ class L10n {
       'themeDarkInk': 'Dunkle Tinte',
     },
     'fr': {
+      'licenses': 'Licences',
       'settings': 'Paramètres',
       'game': 'Jeu',
       'theme': 'Thème',
@@ -335,6 +343,7 @@ class L10n {
       'themeDarkInk': 'Encre sombre',
     },
     'es': {
+      'licenses': 'Licencias',
       'settings': 'Ajustes',
       'game': 'Juego',
       'theme': 'Tema',
@@ -371,6 +380,7 @@ class L10n {
       'themeDarkInk': 'Tinta oscura',
     },
     'it': {
+      'licenses': 'Licenze',
       'settings': 'Impostazioni',
       'game': 'Gioco',
       'theme': 'Tema',
@@ -407,6 +417,7 @@ class L10n {
       'themeDarkInk': 'Inchiostro scuro',
     },
     'pt': {
+      'licenses': 'Licenças',
       'settings': 'Definições',
       'game': 'Jogo',
       'theme': 'Tema',
@@ -443,6 +454,7 @@ class L10n {
       'themeDarkInk': 'Tinta Escura',
     },
     'pt_BR': {
+      'licenses': 'Licenças',
       'settings': 'Configurações',
       'game': 'Jogo',
       'theme': 'Tema',
@@ -479,6 +491,7 @@ class L10n {
       'themeDarkInk': 'Tinta Escura',
     },
     'ru': {
+      'licenses': 'Лицензии',
       'settings': 'Настройки',
       'game': 'Игра',
       'theme': 'Тема',
@@ -515,6 +528,7 @@ class L10n {
       'themeDarkInk': 'Тёмная тушь',
     },
     'ar': {
+      'licenses': 'التراخيص',
       'settings': 'الإعدادات',
       'game': 'اللعبة',
       'theme': 'المظهر',
@@ -551,6 +565,7 @@ class L10n {
       'themeDarkInk': 'حِبر داكن',
     },
     'hi': {
+      'licenses': 'लाइसेंस',
       'settings': 'सेटिंग्स',
       'game': 'खेल',
       'theme': 'थीम',
@@ -587,6 +602,7 @@ class L10n {
       'themeDarkInk': 'गहरी स्याही',
     },
     'id': {
+      'licenses': 'Lisensi',
       'settings': 'Pengaturan',
       'game': 'Permainan',
       'theme': 'Tema',
@@ -623,6 +639,7 @@ class L10n {
       'themeDarkInk': 'Tinta Gelap',
     },
     'nl': {
+      'licenses': 'Licenties',
       'settings': 'Instellingen',
       'game': 'Spel',
       'theme': 'Thema',
@@ -659,6 +676,7 @@ class L10n {
       'themeDarkInk': 'Donkere inkt',
     },
     'pl': {
+      'licenses': 'Licencje',
       'settings': 'Ustawienia',
       'game': 'Gra',
       'theme': 'Motyw',
@@ -695,6 +713,7 @@ class L10n {
       'themeDarkInk': 'Ciemny atrament',
     },
     'th': {
+      'licenses': 'ใบอนุญาต',
       'settings': 'การตั้งค่า',
       'game': 'เกม',
       'theme': 'ธีม',
@@ -731,6 +750,7 @@ class L10n {
       'themeDarkInk': 'หมึกเข้ม',
     },
     'tr': {
+      'licenses': 'Lisanslar',
       'settings': 'Ayarlar',
       'game': 'Oyun',
       'theme': 'Tema',
@@ -767,6 +787,7 @@ class L10n {
       'themeDarkInk': 'Koyu Mürekkep',
     },
     'vi': {
+      'licenses': 'Giấy phép',
       'settings': 'Cài đặt',
       'game': 'Trò chơi',
       'theme': 'Giao diện',
@@ -803,6 +824,7 @@ class L10n {
       'themeDarkInk': 'Mực Đậm',
     },
     'uk': {
+      'licenses': 'Ліцензії',
       'settings': 'Налаштування',
       'game': 'Гра',
       'theme': 'Тема',
@@ -839,6 +861,7 @@ class L10n {
       'themeDarkInk': 'Темне чорнило',
     },
     'fa': {
+      'licenses': 'مجوزها',
       'settings': 'تنظیمات',
       'game': 'بازی',
       'theme': 'پوسته',
@@ -875,6 +898,7 @@ class L10n {
       'themeDarkInk': 'مرکب تیره',
     },
     'sv': {
+      'licenses': 'Licenser',
       'settings': 'Inställningar',
       'game': 'Spel',
       'theme': 'Tema',
@@ -911,6 +935,7 @@ class L10n {
       'themeDarkInk': 'Mörkt bläck',
     },
     'da': {
+      'licenses': 'Licenser',
       'settings': 'Indstillinger',
       'game': 'Spil',
       'theme': 'Tema',
@@ -947,6 +972,7 @@ class L10n {
       'themeDarkInk': 'Mørk blæk',
     },
     'nb': {
+      'licenses': 'Lisenser',
       'settings': 'Innstillinger',
       'game': 'Spill',
       'theme': 'Tema',
@@ -983,6 +1009,7 @@ class L10n {
       'themeDarkInk': 'Mørk blekk',
     },
     'fi': {
+      'licenses': 'Lisenssit',
       'settings': 'Asetukset',
       'game': 'Peli',
       'theme': 'Teema',
@@ -1019,6 +1046,7 @@ class L10n {
       'themeDarkInk': 'Tumma muste',
     },
     'cs': {
+      'licenses': 'Licence',
       'settings': 'Nastavení',
       'game': 'Hra',
       'theme': 'Motiv',
@@ -1055,6 +1083,7 @@ class L10n {
       'themeDarkInk': 'Tmavý inkoust',
     },
     'el': {
+      'licenses': 'Άδειες',
       'settings': 'Ρυθμίσεις',
       'game': 'Παιχνίδι',
       'theme': 'Θέμα',
@@ -1091,6 +1120,7 @@ class L10n {
       'themeDarkInk': 'Σκούρο μελάνι',
     },
     'hu': {
+      'licenses': 'Licencek',
       'settings': 'Beállítások',
       'game': 'Játék',
       'theme': 'Téma',
@@ -1127,6 +1157,7 @@ class L10n {
       'themeDarkInk': 'Sötét tus',
     },
     'ro': {
+      'licenses': 'Licențe',
       'settings': 'Setări',
       'game': 'Joc',
       'theme': 'Temă',
@@ -1163,6 +1194,7 @@ class L10n {
       'themeDarkInk': 'Cerneală întunecată',
     },
     'ms': {
+      'licenses': 'Lesen',
       'settings': 'Tetapan',
       'game': 'Permainan',
       'theme': 'Tema',
@@ -1199,6 +1231,7 @@ class L10n {
       'themeDarkInk': 'Dakwat Gelap',
     },
     'fil': {
+      'licenses': 'Mga lisensya',
       'settings': 'Mga Setting',
       'game': 'Laro',
       'theme': 'Tema',
@@ -1235,6 +1268,7 @@ class L10n {
       'themeDarkInk': 'Madilim na Tinta',
     },
     'bn': {
+      'licenses': 'লাইসেন্স',
       'settings': 'সেটিংস',
       'game': 'খেলা',
       'theme': 'থিম',
@@ -1271,6 +1305,7 @@ class L10n {
       'themeDarkInk': 'গাঢ় কালি',
     },
     'he': {
+      'licenses': 'רישיונות',
       'settings': 'הגדרות',
       'game': 'משחק',
       'theme': 'ערכת נושא',
@@ -1307,6 +1342,7 @@ class L10n {
       'themeDarkInk': 'דיו כהה',
     },
     'ur': {
+      'licenses': 'لائسنسز',
       'settings': 'ترتیبات',
       'game': 'کھیل',
       'theme': 'تھیم',
@@ -1343,6 +1379,7 @@ class L10n {
       'themeDarkInk': 'گہری سیاہی',
     },
     'ta': {
+      'licenses': 'உரிமங்கள்',
       'settings': 'அமைப்புகள்',
       'game': 'விளையாட்டு',
       'theme': 'தீம்',
@@ -1379,6 +1416,7 @@ class L10n {
       'themeDarkInk': 'கரும் மை',
     },
     'te': {
+      'licenses': 'లైసెన్సులు',
       'settings': 'సెట్టింగ్‌లు',
       'game': 'ఆట',
       'theme': 'థీమ్',

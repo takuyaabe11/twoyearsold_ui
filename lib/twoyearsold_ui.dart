@@ -39,6 +39,7 @@ export 'src/theme_name.dart';
 export 'src/twoyearsold_app.dart';
 export 'src/vs_computer_setup.dart';
 export 'src/l10n.dart';
+export 'src/licenses.dart';
 export 'src/providers.dart';
 export 'src/settings_controller.dart';
 export 'src/settings_screen.dart';
