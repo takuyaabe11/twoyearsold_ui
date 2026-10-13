@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'settings_controller.dart';
 import 'app_theme.dart';
+import 'footer_link.dart';
 import 'l10n.dart';
 import 'language_pulldown.dart';
+import 'licenses.dart';
 import 'theme_name.dart';
 import 'section_label.dart';
 
@@ -120,6 +122,23 @@ class SettingsScreen extends ConsumerWidget {
                         ],
                       ),
                     ),
+                    const SizedBox(height: 28),
+                    // 同梱フォントと利用パッケージのライセンス(原文)。
+                    Align(
+                      alignment: AlignmentDirectional.centerStart,
+                      child: FooterLink(
+                        l10n.licenses,
+                        theme,
+                        () => Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => LicensesScreen(
+                              theme: theme,
+                              title: l10n.licenses,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -166,11 +185,7 @@ class _ThemeRow extends StatelessWidget {
                 border: Border.all(color: theme.thinLine),
               ),
               child: Center(
-                child: Container(
-                  width: 9,
-                  height: 9,
-                  color: swatch.accent,
-                ),
+                child: Container(width: 9, height: 9, color: swatch.accent),
               ),
             ),
             const SizedBox(width: 14),
